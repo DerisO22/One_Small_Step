@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "build:wasm": "wat2wasm public/example.wat -o public/example.wasm",
+    "build:wasm": "wat2wasm public/test.wat -o public/test.wasm",
     "dev:wasm": "npm run build wasm && vite",
     "preview": "vite preview"
   },

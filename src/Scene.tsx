@@ -8,7 +8,7 @@ function WasmBox() {
     const meshRef = useRef<Mesh>(null);
     const [result, setResult] = useState(0);
     // Changed: Use .wasm file and absolute path from public folder
-    const { wasm, loading, error } = useWasm('/example.wasm');
+    const { wasm, loading, error } = useWasm('/test.wasm');
 
     useFrame((state) => {
         if (meshRef.current && wasm?.add) {
