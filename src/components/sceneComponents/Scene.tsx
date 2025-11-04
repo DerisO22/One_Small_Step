@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Box, Text } from '@react-three/drei';
 import { Mesh } from 'three';
-import { useWasm } from './hooks/useWasm';
+import { useWasm } from '../../hooks/useWasm.ts';
 
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);

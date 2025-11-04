@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-import Scene from './Scene.tsx';
+import Scene from './components/sceneComponents/Scene.tsx';
 
 function App() {
 	return (
@@ -16,4 +16,4 @@ function App() {
 	)
 }
 
-export default App
+export default App;
