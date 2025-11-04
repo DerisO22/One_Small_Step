@@ -1,4 +1,4 @@
-# One Small Step 🚀
+<h1 style="text-align: center;">One Small Step 🚀</h1>
 ### CSI-370: Computer Architecture Final Project
 
 ### Technologies:
