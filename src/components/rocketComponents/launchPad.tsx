@@ -5,11 +5,12 @@ const LaunchPad = () => {
     const { scene } = useGLTF('./launchPad.glb', true, false);
 
     return (
-        <RigidBody type="dynamic" colliders={false}>
+        <RigidBody type="fixed">
             <primitive 
                 object={ scene }
                 scale={[0.5, 0.5, 0.5]}
-                y-position={0.3}
+                position={[0, 33.1, -4]}
+                rotation={[0, Math.PI, 0]}
             />
         </RigidBody>
     )

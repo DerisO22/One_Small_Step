@@ -5,6 +5,7 @@ import { Mesh } from 'three';
 import { useWasm } from '../../hooks/useWasm.ts';
 import Rocket from '../rocketComponents/rocket.tsx';
 import Earth from './Earth.tsx';
+import LaunchPad from '../rocketComponents/launchPad.tsx';
 
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);
@@ -21,6 +22,8 @@ function WasmBox() {
             
             meshRef.current.position.y = Math.sin(state.clock.elapsedTime) * 2;
         }
+
+        
     })
 
     if (loading) return <Text position={[0, 0, 0]} fontSize={0.5}>Loading WASM...</Text>
@@ -30,14 +33,13 @@ function WasmBox() {
         <>
             {/* Lights */}
             <ambientLight intensity={0.5} />
-            <directionalLight position={[10, 10, 5]} intensity={1} />
+            <directionalLight position={[100, 100, 5]} intensity={5} />
 
-            {/* Animated Box */}
-            <Box ref={meshRef} args={[1, 1, 1]} position={[-1, 3, 0]}>
-                <meshStandardMaterial color="orange" />
-            </Box>
-
+            {/* Launch Components */}
             <Rocket />
+            <LaunchPad />
+
+            {/* System */}
             <Earth />
 
             {/* Display WASM Result */}

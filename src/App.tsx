@@ -8,7 +8,7 @@ function App() {
 	return (
 		<div style={{ width: '100vw', height: '100vh' }}>
 			<Canvas
-				camera={{ position: [3, 5, 5], fov: 90 }}
+				camera={{ position: [1000, 1000, 5], fov: 80 }}
 				shadows
 			>
 				{/* Actual Level */}
@@ -18,7 +18,7 @@ function App() {
 				
 				{/* Lighting, Background, and Camera */}
 				<Sky 
-					distance={300} 
+					distance={1000} 
 					sunPosition={[0, -200, 0]}
 					inclination={skyConfig.inclination}
 					azimuth={skyConfig.azimuth}
@@ -28,10 +28,10 @@ function App() {
 					turbidity={skyConfig.turbidity}
 				/>
 				<Stars 
-					radius={1} 
-					depth={50} 
+					radius={400} 
+					depth={10} 
 					count={1000} 
-					factor={1.2} 
+					factor={20} 
 					saturation={10} 
 					fade={true}
 					speed={1}
