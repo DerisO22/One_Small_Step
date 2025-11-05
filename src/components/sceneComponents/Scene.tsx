@@ -3,12 +3,14 @@ import { useFrame } from '@react-three/fiber';
 import { Box, Text } from '@react-three/drei';
 import { Mesh } from 'three';
 import { useWasm } from '../../hooks/useWasm.ts';
+import Rocket from '../rocketComponents/rocket.tsx';
+import Earth from './Earth.tsx';
 
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);
     const [result, setResult] = useState(0);
     // Changed: Use .wasm file and absolute path from public folder
-    const { wasm, loading, error } = useWasm('/test.wasm');
+    const { wasm, loading, error } = useWasm('/wasm/test.wasm');
 
     useFrame((state) => {
         if (meshRef.current && wasm?.add) {
@@ -35,8 +37,11 @@ function WasmBox() {
                 <meshStandardMaterial color="orange" />
             </Box>
 
+            <Rocket />
+            <Earth />
+
             {/* Display WASM Result */}
-            <Text position={[-1, 3, 0]} fontSize={0.5} color="white">
+            <Text position={[-4, 3, 0]} fontSize={0.5} color="white">
                 WASM Result: {result}
             </Text>
         </>
