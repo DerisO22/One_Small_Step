@@ -1,12 +1,17 @@
-import { useLoader } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useRef } from "react";
-import { Mesh, TextureLoader } from "three";
+import { Mesh } from "three";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthMaterial from "./EarthMaterial";
 
+/**
+ * Scale of System 1:1000 in kilometers
+ * 1 r3f  unit = 1000km
+ */
+
 const Earth = () => {
     const earthRef = useRef<Mesh>(null);
+    // 6,371 km -> 63.71 r3f units
     const radius = 63.71
 
     return (
