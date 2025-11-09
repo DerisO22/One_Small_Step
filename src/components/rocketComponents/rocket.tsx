@@ -43,26 +43,26 @@ const Rocket = () => {
         }
 
 		if(body.current && body.current.translation().y < 100){
-			//body.current.applyImpulse({ x: 0, y: 3, z: 0 }, true);
+			// body.current.applyImpulse({ x: 0, y: 3, z: 0 }, true);
 		}
 	}, []);
 
 	useFrame((state) => {
-		// updateFrame(state);
+		updateFrame(state);
 	})
 	
 	return (
-		<RigidBody canSleep={true} mass={10} restitution={0.000001} linearDamping={0.9} angularDamping={1.3} type="dynamic" ref={body}>
-			<group position={[-2.3, 37, -5]}>
+		<RigidBody canSleep={true} mass={20000} restitution={0.000001} linearDamping={1.3} lockRotations={false} angularDamping={0.9} type="dynamic" ref={body}>
+			<group position={[-0.044, 607.0875, -4.001]}>
 				<primitive
 					object={ scene }
-					scale={[0.1, 0.1, 0.1]}
+					scale={[.0025, .0025, .0025]}
 				/>
-				<Text color="white" rotation={[0, Math.PI, 0]} position={[-4, 5, 0]}>
+				<Text color="white" fontSize={0.0025} rotation={[0, Math.PI, 0]} position={[-4, 5, 0]}>
 					Saturn V
 				</Text>
-				<group ref={cameraTarget} position-z={9.5} />
-            	<group ref={cameraPosition} position-y={5} position-z={-20} />
+				<group ref={cameraTarget} position-z={0.4} />
+            	<group ref={cameraPosition} position-y={0.2} position-z={-0.3} />
 			</group>
 			
 			

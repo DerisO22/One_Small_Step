@@ -18,7 +18,7 @@ function App() {
 				
 				{/* Lighting, Background, and Camera */}
 				<Sky 
-					distance={1000} 
+					distance={10000} 
 					sunPosition={[0, -200, 0]}
 					inclination={skyConfig.inclination}
 					azimuth={skyConfig.azimuth}
@@ -28,7 +28,7 @@ function App() {
 					turbidity={skyConfig.turbidity}
 				/>
 				<Stars 
-					radius={400} 
+					radius={500} 
 					depth={10} 
 					count={1000} 
 					factor={20} 
@@ -36,7 +36,15 @@ function App() {
 					fade={true}
 					speed={1}
             	/>
-				<OrbitControls enableDamping dampingFactor={0.05} />
+				<OrbitControls 
+					enableDamping 
+					dampingFactor={0.05}
+					rotateSpeed={0.01}
+					panSpeed={0.01}
+					zoomSpeed={.01}
+					// minDistance={10}
+					// maxDistance={500}
+				 />
 			</Canvas>
 		</div>
 	)

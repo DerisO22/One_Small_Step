@@ -6,6 +6,7 @@ import { useWasm } from '../../hooks/useWasm.ts';
 import Rocket from '../rocketComponents/rocket.tsx';
 import Earth from './Earth.tsx';
 import LaunchPad from '../rocketComponents/launchPad.tsx';
+import Moon from './Moon.tsx';
 
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);
@@ -22,8 +23,6 @@ function WasmBox() {
             
             meshRef.current.position.y = Math.sin(state.clock.elapsedTime) * 2;
         }
-
-        
     })
 
     if (loading) return <Text position={[0, 0, 0]} fontSize={0.5}>Loading WASM...</Text>
@@ -39,8 +38,9 @@ function WasmBox() {
             <Rocket />
             <LaunchPad />
 
-            {/* System */}
+            {/* Space System */}
             <Earth />
+            <Moon />
 
             {/* Display WASM Result */}
             <Text position={[-4, 3, 0]} fontSize={0.5} color="white">
