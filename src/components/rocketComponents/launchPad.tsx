@@ -9,17 +9,16 @@ const LaunchPad = () => {
             <primitive 
                     object={ scene }
                     scale={[.01, .01, .01]}
-                    position={[0, 607, -4]}
+                    position={[0, 607.42, -4]}
                     rotation={[0, Math.PI, 0]}
             />
             <RigidBody type="fixed" colliders="cuboid">
-                <mesh position={[-0.0425, 607.04, -4.01]}>
-                    <boxGeometry args={[0.06, 0.03, 0.04]}/>
+                <mesh position={[-0.0425, 607.445, -4.01]}>
+                    <boxGeometry args={[0.08, 0.03, 0.08]}/>
                     <meshStandardMaterial color="gray"/>
                 </mesh>
             </RigidBody>
         </>
-        
     )
 }
 

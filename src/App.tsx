@@ -8,7 +8,7 @@ function App() {
 	return (
 		<div style={{ width: '100vw', height: '100vh' }}>
 			<Canvas
-				camera={{ position: [1000, 1000, 5], fov: 80 }}
+				camera={{ position: [1000, 1000, 5], fov: 90 }}
 				shadows
 			>
 				{/* Actual Level */}

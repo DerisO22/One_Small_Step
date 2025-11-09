@@ -52,13 +52,13 @@ const Rocket = () => {
 	})
 	
 	return (
-		<RigidBody canSleep={true} mass={20000} restitution={0.000001} linearDamping={1.3} lockRotations={false} angularDamping={0.9} type="dynamic" ref={body}>
-			<group position={[-0.044, 607.0875, -4.001]}>
+		<RigidBody canSleep={true} mass={20000} restitution={0.000000000000001} lockRotations={true} type="dynamic" ref={body}>
+			<group position={[-0.044, 608.175, -4.009]}>
 				<primitive
 					object={ scene }
 					scale={[.0025, .0025, .0025]}
 				/>
-				<Text color="white" fontSize={0.0025} rotation={[0, Math.PI, 0]} position={[-4, 5, 0]}>
+				<Text color="white" fontSize={0.025} rotation={[0, Math.PI, 0]} position={[-0.1, 0.15, 0]}>
 					Saturn V
 				</Text>
 				<group ref={cameraTarget} position-z={0.4} />
