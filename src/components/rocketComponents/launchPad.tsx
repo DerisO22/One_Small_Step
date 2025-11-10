@@ -13,8 +13,8 @@ const LaunchPad = () => {
                     rotation={[0, Math.PI, 0]}
             />
             <RigidBody type="fixed" colliders="cuboid">
-                <mesh position={[-0.0425, 607.445, -4.01]}>
-                    <boxGeometry args={[0.08, 0.03, 0.08]}/>
+                <mesh position={[-0.0425, 607.415, -4.01]}>
+                    <boxGeometry args={[0.12, 0.08, 0.12]}/>
                     <meshStandardMaterial color="gray"/>
                 </mesh>
             </RigidBody>

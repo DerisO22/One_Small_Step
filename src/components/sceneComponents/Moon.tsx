@@ -9,7 +9,7 @@ const Moon = () => {
     const radius = 173.7 / 2;
 
     return (
-        <RigidBody>
+        <RigidBody type="fixed">
             <mesh position={[0, 900, 0]} ref={moonRef}>
                 <icosahedronGeometry args={[radius, 80]} />
                 <meshStandardMaterial map={moonMaterial} />

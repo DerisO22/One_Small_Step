@@ -2,14 +2,15 @@ import { Text, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { useCallback, useEffect, useRef } from "react";
-import type { Group, Mesh } from "three";
+import type { Mesh } from "three";
 import { Vector3, Camera } from "three";
+import type { RocketProps } from "../../utils/types/missionTypes";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
 const initialCameraLookAt = new Vector3();
 
-const Rocket = () => {
+const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
     const { scene } = useGLTF('./rocketship.glb', true, false);
 	
@@ -20,14 +21,14 @@ const Rocket = () => {
     const cameraLookAtWorldPosition = useRef(initialCameraLookAtWorldPosition);
     const cameraLookAt = useRef(initialCameraLookAt);
 
-	 // Add shadows to entire character model
-	 useEffect(() => {
-        scene.traverse((child) => {
+	// Add shadows to entire character model
+	useEffect(() => {
+		scene.traverse((child) => {
 			if((child as Mesh).isMesh){
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        })
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		})
     }, [scene])
 
 	const updateFrame = useCallback(({ camera }: { camera: Camera }) => {
@@ -42,18 +43,42 @@ const Rocket = () => {
             camera.lookAt(cameraLookAt.current);
         }
 
-		if(body.current && body.current.translation().y < 100){
-			// body.current.applyImpulse({ x: 0, y: 0.0000375, z: 0 }, true);
+		// Update the rocket during launch
+		if(launched && body.current && missionState.fuel > 0) {
+			console.log(body.current);
+			const thrustForce = 0.00005;
+			body.current.applyImpulse({ x: 0, y: thrustForce, z: 0 }, true);
+
+			const burnRate = 2000 * (1/60);
+			const newFuel = Math.max(0, missionState.fuel - burnRate);
+			const newMass = 2000 + newFuel;
+
+			const currentAltitude = body.current.translation().y;
+
+			updateMission({
+				fuel: newFuel,
+				mass: newMass,
+				altitude: currentAltitude,
+			})
 		}
-	}, []);
+	}, [ launched, missionState, updateMission ]);
 
 	useFrame((state) => {
-		// updateFrame(state);
+		updateFrame(state);
 	})
 	
 	return (
-		<RigidBody canSleep={true} mass={20000} restitution={0.000000000000001} linearDamping={10.3} angularDamping={2} lockRotations={false} type="dynamic" ref={body}>
-			<group position={[-0.044, 608.175, -4.009]}>
+		<RigidBody 
+			canSleep={false} 
+			mass={missionState.mass} 
+			restitution={0.1} 
+			linearDamping={0} 
+			angularDamping={0.5} 
+			lockRotations={true} 
+			type={launched ? "dynamic" : "kinematicPosition"} 
+			ref={body}
+		>
+			<group position={[-0.044, 607.465, -4.009]}>
 				<primitive
 					object={ scene }
 					scale={[.0025, .0025, .0025]}
