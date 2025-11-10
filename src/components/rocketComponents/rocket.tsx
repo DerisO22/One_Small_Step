@@ -43,16 +43,16 @@ const Rocket = () => {
         }
 
 		if(body.current && body.current.translation().y < 100){
-			// body.current.applyImpulse({ x: 0, y: 3, z: 0 }, true);
+			// body.current.applyImpulse({ x: 0, y: 0.0000375, z: 0 }, true);
 		}
 	}, []);
 
 	useFrame((state) => {
-		updateFrame(state);
+		// updateFrame(state);
 	})
 	
 	return (
-		<RigidBody canSleep={true} mass={20000} restitution={0.000000000000001} lockRotations={true} type="dynamic" ref={body}>
+		<RigidBody canSleep={true} mass={20000} restitution={0.000000000000001} linearDamping={10.3} angularDamping={2} lockRotations={false} type="dynamic" ref={body}>
 			<group position={[-0.044, 608.175, -4.009]}>
 				<primitive
 					object={ scene }
@@ -64,8 +64,6 @@ const Rocket = () => {
 				<group ref={cameraTarget} position-z={0.4} />
             	<group ref={cameraPosition} position-y={0.2} position-z={-0.3} />
 			</group>
-			
-			
 		</RigidBody>
     )
 }

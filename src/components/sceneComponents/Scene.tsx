@@ -11,7 +11,6 @@ import Moon from './Moon.tsx';
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);
     const [result, setResult] = useState(0);
-    // Changed: Use .wasm file and absolute path from public folder
     const { wasm, loading, error } = useWasm('/wasm/test.wasm');
 
     useFrame((state) => {
