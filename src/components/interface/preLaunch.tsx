@@ -1,19 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMission } from "../../stores/useMission";
 import './styles/preLaunch.css';
 
 const PreLaunchInterface = () => {
+    const [ instructions_visible, setInstructions_visible ] = useState<boolean>(false);
+    // Gotta make this into a global context instead of just the hook
+    // so I can make sure all components can get that missionState
     const mission = useMission();
 
     useEffect(() => {
 
     }, [mission.state.launched]);
 
+    const toggle_Instructions = () => {
+        setInstructions_visible(prev => !prev);
+    };
+
     return (
         <>
             {!mission.state.launched ? (
                 <div className="preLaunchInterface_Container">
-                    Test
+                    <div className="instructions_button_container">
+                        <div onClick={toggle_Instructions} className="instructions_button"></div>
+                    </div>
+
+                    {instructions_visible ? (
+                        <div className="instructions">
+                            test
+                        </div>
+                    ) : (<></>)}
+
+                    <div className="launch_button_container">
+                        <div className="launch_button">Launch</div>    
+                    </div>
+                    
                 </div>
             ) : null}
         </>
