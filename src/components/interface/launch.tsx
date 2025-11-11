@@ -1,9 +1,9 @@
-import { useMission } from "../../stores/useMission"
+import { useMission } from "../../stores/MissionContext";
 
 const LaunchInterface = () => {
-    const mission = useMission();
+    const { state } = useMission();
 
-    if (!mission.state.launched && mission.state.fuel < 0) {
+    if (!state.launched && state.fuel < 0) {
         return null;
     }
 

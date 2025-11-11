@@ -1,3 +1,10 @@
+export interface MissionContextType {
+    state: MissionState,
+    launch: () => void,
+    updateMissionData: (updates: Partial<MissionState>) => void,
+    reset: () => void
+}
+
 export interface MissionState {
     launched: boolean,
     missionTime: number,

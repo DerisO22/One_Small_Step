@@ -7,25 +7,24 @@ import Rocket from '../rocketComponents/rocket.tsx';
 import Earth from './Earth.tsx';
 import LaunchPad from '../rocketComponents/launchPad.tsx';
 import Moon from './Moon.tsx';
-import { useMission } from '../../stores/useMission.ts';
-import PreLaunchInterface from '../interface/preLaunch.tsx';
+import { useMission } from '../../stores/MissionContext.tsx';
 
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);
     const [result, setResult] = useState(0);
     const { wasm, loading, error } = useWasm('/wasm/test.wasm');
-    const mission = useMission();
+    const { state, launch, updateMissionData } = useMission();
 
     // Handle the initial launch of the rocket (space bar)
     useEffect(() => {
         const handleKeyPress = (e: KeyboardEvent) => {
-            if(e.code === 'Space' && !mission.state.launched){
-                mission.launch();
+            if(e.code === 'Space' && !state.launched){
+                launch();
             }
         }
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [mission])
+    }, [state.launched, launch])
 
     useFrame((state) => {
         if (meshRef.current && wasm?.add) {
@@ -48,7 +47,7 @@ function WasmBox() {
             <directionalLight position={[100, 100, 5]} intensity={5} />
 
             {/* Launch Components */}
-            <Rocket launched={mission.state.launched} missionState={mission.state} updateMission={mission.updateMissionData}/>
+            <Rocket launched={state.launched} missionState={state} updateMission={updateMissionData}/>
             <LaunchPad />
 
             {/* Space System */}
