@@ -45,7 +45,6 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 
 		// Update the rocket during launch
 		if(launched && body.current && missionState.fuel > 0) {
-			console.log(body.current);
 			const thrustForce = 0.00005;
 			body.current.applyImpulse({ x: 0, y: thrustForce, z: 0 }, true);
 

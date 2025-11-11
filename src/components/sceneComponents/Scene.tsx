@@ -8,6 +8,7 @@ import Earth from './Earth.tsx';
 import LaunchPad from '../rocketComponents/launchPad.tsx';
 import Moon from './Moon.tsx';
 import { useMission } from '../../stores/useMission.ts';
+import PreLaunchInterface from '../interface/preLaunch.tsx';
 
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);
@@ -20,7 +21,6 @@ function WasmBox() {
         const handleKeyPress = (e: KeyboardEvent) => {
             if(e.code === 'Space' && !mission.state.launched){
                 mission.launch();
-                console.log("Rocket has been launched")
             }
         }
         window.addEventListener('keydown', handleKeyPress);
@@ -54,17 +54,6 @@ function WasmBox() {
             {/* Space System */}
             <Earth />
             <Moon />
-
-            {/* Mission UI */}
-            <Text position={[0, 650, 0]} fontSize={2} color="white">
-                {mission.state.launched ? 'LAUNCHING' : 'Press SPACE to Launch'}
-            </Text>
-            <Text position={[0, 645, 0]} fontSize={1.5} color="white">
-                Altitude: {mission.state.altitude.toFixed(0)} km
-            </Text>
-            <Text position={[0, 642, 0]} fontSize={1.5} color="white">
-                Fuel: {mission.state.fuel.toFixed(0)} kg
-            </Text>
         </>
     )
 }
