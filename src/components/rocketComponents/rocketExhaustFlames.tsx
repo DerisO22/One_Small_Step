@@ -13,4 +13,4 @@ const rocketExhaustFlames = () => {
     );
 }
 
-export default rocketExhaustFlames
+export default rocketExhaustFlames;
