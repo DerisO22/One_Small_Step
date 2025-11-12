@@ -28,9 +28,9 @@ const LaunchInterface = () => {
                 </>
             ) : (
                 // End Screen Interface
-                <>
-
-                </>
+                <div className="end_container">
+                    
+                </div>
             )}
         </>
     )
