@@ -44,9 +44,9 @@ function App() {
 						<OrbitControls 
 							enableDamping 
 							dampingFactor={0.05}
-							rotateSpeed={0.1}
-							panSpeed={0.1}
-							zoomSpeed={.1}
+							rotateSpeed={0.001}
+							panSpeed={0.01}
+							zoomSpeed={.001}
 							// minDistance={10}
 							// maxDistance={500}
 						/>

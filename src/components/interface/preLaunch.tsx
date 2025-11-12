@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMission } from "../../stores/MissionContext";
 import './styles/preLaunch.css';
+import '../../index.css';
 
 const PreLaunchInterface = () => {
     const [ instructions_visible, setInstructions_visible ] = useState<boolean>(false);
@@ -19,14 +20,18 @@ const PreLaunchInterface = () => {
     return (
         <>
             {!state.launched ? (
-                <div className="preLaunchInterface_Container">
+                <>
                     <div className="instructions_button_container">
                         <div onClick={toggle_Instructions} className="instructions_button"></div>
                     </div>
 
                     {instructions_visible ? (
                         <div className="instructions">
-                            test
+                            <p className="header1">Welcome to the Rocket Launch Simulation</p>
+                            <p className="text">Your goal is getting this rocket into Low-Earth Orbit !</p>
+                            <p className="text">You can adjust the rocket's properties by clicking on the rocket icon in the top left</p>
+                            <p className="text">After you're all set, click the launch button or press the spacebar</p>
+                            <p className="header2">Goodluck, We're counting on You !</p>
                         </div>
                     ) : (<></>)}
 
@@ -34,7 +39,7 @@ const PreLaunchInterface = () => {
                         <div onClick={launch} className="launch_button">Launch</div>    
                     </div>
                     
-                </div>
+                </>
             ) : null}
         </>
     );

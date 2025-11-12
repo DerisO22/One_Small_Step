@@ -1,9 +1,43 @@
+@font-face {
+    font-family: bebas;
+    src: url('/bebas-neue-v9-latin-regular.woff');
+}
+
+:root {
+    --bg-color: #080808;
+    --second-bg-color: #131313;
+    --text-color: white;
+    --main-color: #00f2ff;
+    --start-bg-color: #83988E;
+    --start-text-color: #D5AD36;
+}
+
 body {
 	margin: 0;
 	display: flex;
 	place-items: center;
 	min-width: 320px;
 	min-height: 100vh;
+	overflow: hidden;
+	font-family: bebas;
+}
+
+.header1 {
+	font-size: 2rem;
+	font-weight: 700;
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+.header2 {
+	margin-top: 2.8rem;
+	font-size: 1.6rem;
+	text-align: center;
+}
+
+.text {
+	font-size: 1.4rem;
+	text-align: center;
 }
 
 @media screen and (max-width: 856px) {
