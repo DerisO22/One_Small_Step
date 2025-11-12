@@ -1,0 +1,42 @@
+/* 
+    Rocket Measurements
+    - Velocity
+    - Altitude
+*/
+.rocket_measurements_container {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+
+    display: flex;
+    gap: 2rem;
+    color: var(--text-color);
+
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1000;
+}
+
+.velocity_tracker_container {
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Styles */
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.altitude_tracker_container {
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Styles */
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
