@@ -40,3 +40,29 @@
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.7);
 }
+
+/* 
+    Launch Timer
+*/
+.launch_timer_container {
+    width: 10rem;
+    height: 3rem;
+    position: absolute;
+
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+    gap: 2rem;
+    color: var(--text-color);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+}
+
+.missionTime {
+    padding-left: 1rem;
+}
