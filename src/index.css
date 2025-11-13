@@ -40,6 +40,12 @@ body {
 	text-align: center;
 }
 
+.text_xs {
+	font-size: 1rem;
+	text-align: center;
+	color: var(--text-color);
+}
+
 @media screen and (max-width: 856px) {
     body {
 

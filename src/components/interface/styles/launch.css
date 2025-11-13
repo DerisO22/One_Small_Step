@@ -10,7 +10,7 @@
 
     display: flex;
     gap: 2rem;
-    color: var(--text-color);
+    color: rgb(176, 176, 176);
 
     bottom: 1rem;
     left: 1rem;
@@ -18,26 +18,30 @@
 }
 
 .velocity_tracker_container {
-    width: 8rem;
-    height: 8rem;
+    width: 6rem;
+    height: 6rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     /* Styles */
     border-radius: 50%;
+    border: 3px dashed rgba(176, 176, 176, 0.8);
     background-color: rgba(0, 0, 0, 0.7);
 }
 
 .altitude_tracker_container {
-    width: 8rem;
-    height: 8rem;
+    width: 6rem;
+    height: 6rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     /* Styles */
     border-radius: 50%;
+    border: 3px dashed rgb(176, 176, 176);
     background-color: rgba(0, 0, 0, 0.7);
 }
 
