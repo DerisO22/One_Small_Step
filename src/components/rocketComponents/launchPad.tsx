@@ -1,5 +1,5 @@
-import { RigidBody } from "@react-three/rapier"
-import { useGLTF } from "@react-three/drei"
+import { RigidBody } from "@react-three/rapier";
+import { useGLTF } from "@react-three/drei";
 
 const LaunchPad = () => {
     const { scene } = useGLTF('./launchPad.glb', true, false);

@@ -7,7 +7,7 @@ const LaunchInterface = () => {
 
     return (
         <>
-            { !state.launched && state.fuel > 0 ? (
+            { state.launched && state.fuel > 0 ? (
                 <>
                     {/* Probably just velocity and altitude for now */}
                     <div className="rocket_measurements_container">
@@ -21,7 +21,7 @@ const LaunchInterface = () => {
                         {/* Altitude */}
                         <div className="altitude_tracker_container">
                             <span className="altitude_tracker">Altitude</span>
-                            <span className="text_xs">{state.altitude}</span>
+                            <span className="text_xs">{String(state.altitude).slice(0, 6)}</span>
                             <span className="velocity_tracker">KM</span>
                         </div>
                     </div>

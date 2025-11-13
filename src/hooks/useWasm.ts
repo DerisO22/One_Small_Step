@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-
-interface WasmModule {
-    add?: (a: number, b: number) => number
-    // Add other exported functions here
-}
+import type { WasmModule } from '../utils/types/wasmModule';
 
 export function useWasm(wasmPath: string) {
     const [wasm, setWasm] = useState<WasmModule | null>(null);
