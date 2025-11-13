@@ -1,0 +1,98 @@
+/* 
+    Instructions 
+*/
+.instructions_button_container {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 1rem;
+    right: 1rem;
+    background-repeat: no-repeat;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    pointer-events: auto;
+    user-select: none;
+    z-index: 1000;
+}
+
+.instructions_button_container:hover {
+    transform: scale(1.2);
+}
+
+.instructions_button {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-size: 70%;
+    background-color: rgba(255, 255, 255, 0.6);
+    background-image: url("/info.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.3s ease-in-out;
+    user-select: none;
+}
+
+.instructions_button:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.instructions {
+    width: 60%;
+    height: fit-content;
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* styles */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--text-color);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 
+*   Launch Button
+*/
+.launch_button_container {
+    width: 10rem;
+    height: 5rem;
+    bottom: 2rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    margin: auto;
+}
+
+.launch_button {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 7rem;
+    height: 3rem;
+    user-select: none;
+
+    /* styles */
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 5px;
+    border: 1px solid rgba(110, 255, 202, 0.9);
+    background-color: rgba(110, 255, 202, 0.4);
+    box-shadow: 0 0 10px 3px rgba(110, 255, 202, 0.5);
+    transition: all 0.3s ease-in-out;
+}
+
+.launch_button:hover {
+    transform: scale(1.1);
+}
+
+.launch_button:active {
+    transform: scale(0.9);
+}

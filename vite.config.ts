@@ -6,12 +6,12 @@ import topLevelAwait from 'vite-plugin-top-level-await';
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
-		react(),
-		wasm(),
-		topLevelAwait()
+      react(),
+      wasm(),
+      topLevelAwait()
     ],
 
     optimizeDeps: {
       	exclude: ['your-wasm-package']
     }
-})
+});

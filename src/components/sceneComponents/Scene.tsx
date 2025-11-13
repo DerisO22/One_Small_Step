@@ -1,14 +1,30 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Box, Text } from '@react-three/drei';
 import { Mesh } from 'three';
 import { useWasm } from '../../hooks/useWasm.ts';
+import Rocket from '../rocketComponents/rocket.tsx';
+import Earth from './Earth.tsx';
+import LaunchPad from '../rocketComponents/launchPad.tsx';
+import Moon from './Moon.tsx';
+import { useMission } from '../../stores/MissionContext.tsx';
 
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);
     const [result, setResult] = useState(0);
-    // Changed: Use .wasm file and absolute path from public folder
-    const { wasm, loading, error } = useWasm('/test.wasm');
+    const { wasm, loading, error } = useWasm('/wasm/test.wasm');
+    const { state, launch, updateMissionData } = useMission();
+
+    // Handle the initial launch of the rocket (space bar)
+    useEffect(() => {
+        const handleKeyPress = (e: KeyboardEvent) => {
+            if(e.code === 'Space' && !state.launched){
+                launch();
+            }
+        }
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [state.launched, launch])
 
     useFrame((state) => {
         if (meshRef.current && wasm?.add) {
@@ -28,17 +44,15 @@ function WasmBox() {
         <>
             {/* Lights */}
             <ambientLight intensity={0.5} />
-            <directionalLight position={[10, 10, 5]} intensity={1} />
+            <directionalLight position={[100, 100, 5]} intensity={5} />
 
-            {/* Animated Box */}
-            <Box ref={meshRef} args={[1, 1, 1]} position={[-1, 3, 0]}>
-                <meshStandardMaterial color="orange" />
-            </Box>
+            {/* Launch Components */}
+            <Rocket launched={state.launched} missionState={state} updateMission={updateMissionData}/>
+            <LaunchPad />
 
-            {/* Display WASM Result */}
-            <Text position={[-1, 3, 0]} fontSize={0.5} color="white">
-                WASM Result: {result}
-            </Text>
+            {/* Space System */}
+            <Earth />
+            <Moon />
         </>
     )
 }
