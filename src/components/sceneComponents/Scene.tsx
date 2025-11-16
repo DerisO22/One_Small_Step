@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Box, Text } from '@react-three/drei';
+import { Text } from '@react-three/drei';
 import { Mesh } from 'three';
 import { useWasm } from '../../hooks/useWasm.ts';
 import Rocket from '../rocketComponents/rocket.tsx';
@@ -12,7 +12,7 @@ import { useMission } from '../../stores/MissionContext.tsx';
 function WasmBox() {
     const meshRef = useRef<Mesh>(null);
     const [result, setResult] = useState(0);
-    const { wasm, loading, error } = useWasm('/wasm/test.wasm');
+    const { wasm, loading, error } = useWasm('/wasm/rocketPhysics.wasm');
     const { state, launch, updateMissionData } = useMission();
 
     // Handle the initial launch of the rocket (space bar)
