@@ -83,8 +83,12 @@
         ;; Return Type
         (result f32)
 
+        ;; Calculation
         (local.get $thrust_force)
-        (f32.const 2)
-        (f32.mul)
+        (local.get $drag_force)
+        (i32.sub)
+        
+        (local.get $force_of_gravity)
+        (i32.sub)
     )
 )
