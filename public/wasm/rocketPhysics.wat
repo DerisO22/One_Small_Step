@@ -89,6 +89,24 @@
         (f32.div)
     )
 
+    (func $compute_new_velocity (export "compute_new_velocity")
+        ;; Params
+        (param $current_velocity f32)
+        (param $current_acceleration f32)
+        (param $delta_time f32)
+
+        ;; Return Type
+        (return f32)
+
+        ;; Calculations
+        (local.get $current_acceleration)
+        (local.get $delta_time)
+        (f32.mul)
+
+        (local.get $current_velocity)
+        (f32.add)
+    )
+
     ;;
     ;;
     ;;  Supporting Calculations
