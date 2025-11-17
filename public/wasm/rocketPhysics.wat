@@ -89,10 +89,10 @@
         ;; Calculations
         (local.get $thrust_force)
         (local.get $drag_force)
-        (i32.sub)
+        (f32.sub)
 
         (local.get $force_of_gravity)
-        (i32.sub)
+        (f32.sub)
     )
 
     ;;
@@ -106,7 +106,7 @@
         (param $mass f32)
 
         ;; Return Type
-        (return f32)
+        (result f32)
 
         ;; Calculations
         (local.get $net_force)
@@ -121,7 +121,7 @@
         (param $delta_time f32)
 
         ;; Return Type
-        (return f32)
+        (result f32)
 
         ;; Calculations
         (local.get $current_acceleration)
@@ -139,7 +139,7 @@
         (param $delta_time f32)
 
         ;; Return Type
-        (return f32)
+        (result f32)
 
         ;; Calculations
         (local.get $current_velocity)
@@ -163,9 +163,17 @@
         ;; Return Type
         (result f32)
 
+        (local $pi f32)
+
+        (f32.const 3.1415968)
+        (local.set $pi)
+
         ;; Calculations
         (local.get $rocket_radius)
-        (f32.const 2)
+        (local.get $rocket_radius)
+        (f32.mul)
+
+        (local.get $pi)
         (f32.mul)
     )
 
@@ -174,7 +182,7 @@
         (param $altitude f32)
 
         ;; Return Type
-        (return f32)
+        (result f32)
 
         ;; Helper values:
         ;; sea level air density = 1.225 kg/m^3
@@ -182,12 +190,13 @@
         ;; e = 2.71728
         (local $sea_level_air_density f32)
         (local $scale_height f32)
-        (local $e f32)
         (local $exponent f32)
 
-        (local.set $sea_level_air_density (f32.const 1.225))
-        (local.set $scale_height (f32.const 8500))
-        (local.set $e (f32.const 2.71728))
+        (f32.const 1.225)
+        (local.set $sea_level_air_density)
+
+        (f32.const 8500)
+        (local.set $scale_height)
 
         ;; Calculations
         (local.get $altitude)
@@ -209,7 +218,7 @@
         (param $throttle f32)
 
         ;; Return Type
-        (return f32)
+        (result f32)
 
         ;; Calculations
         (local.get $burn_rate)
