@@ -107,6 +107,24 @@
         (f32.add)
     )
 
+    (func $compute_new_altitude (export "compute_new_altitude")
+        ;; Params
+        (param $current_altitude f32)
+        (param $current_velocity f32)
+        (param $delta_time f32)
+
+        ;; Return Type
+        (return f32)
+
+        ;; Calculations
+        (local.get $current_velocity)
+        (local.get $delta_time)
+        (f32.mul)
+
+        (local.get $current_altitude)
+        (f32.add)
+    )
+
     ;;
     ;;
     ;;  Supporting Calculations
