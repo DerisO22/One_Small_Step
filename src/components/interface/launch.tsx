@@ -5,10 +5,6 @@ import '../../index.css';
 const LaunchInterface = () => {
     const { state, reset } = useMission();
 
-    const restartMission = () => {
-        reset();
-    }
-
     return (
         <>
             {(state.launched && state.fuel > 0) ? (
@@ -50,7 +46,7 @@ const LaunchInterface = () => {
                 state.altitude > 0 ? (
                     // End Screen Interface
                     <div className="end_container">
-                        <span className="text">End of Mission</span>
+                        <span className="end_message header1">End of Mission</span>
                         <div onClick={reset} className="restart_button header1">
                             Restart
                         </div>

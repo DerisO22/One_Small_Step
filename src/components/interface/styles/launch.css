@@ -78,8 +78,8 @@
 *   Launch Timer
 */
 .end_container {
-    width: 60%; 
-    height: 30rem;
+    width: 30rem; 
+    height: 20rem;
     position: absolute;
 
     top: 25vh;
@@ -94,4 +94,33 @@
     justify-content: center;
 
     color: var(--text-color);
+}
+
+.end_message {
+    margin-top: 2rem;
+}
+
+.restart_button {
+    width: 10rem;
+    height: fit-content;
+    padding-top: 0.2rem;
+    user-select: none;
+
+    background-color: rgba(248, 50, 50, 0.759);
+    transition: all 0.3s ease-in-out;
+}
+
+.restart_button:hover {
+    transform: scale(1.1);
+}
+
+.restart_button:active {
+    transform: scale(0.9);
+}
+
+
+@media screen and (max-width: 824px) {
+    .end_container {
+        width: 80%;
+    }
 }
