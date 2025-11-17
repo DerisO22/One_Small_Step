@@ -17,9 +17,21 @@
         ;; Return Type
         (result f32)
 
+        ;; Calculations
         (local.get $drag_coefficient)
+        (f32.const 0.5)
+        (f32.mul)
+
         (local.get $air_density)
-        (f32.add)
+        (f32.mul)
+
+        (local.get $reference_area)
+        (f32.mul)
+
+        (local.get $velocity)
+        (local.get $velocity)
+        (f32.mul)
+        (f32.mul)
     )
 
     ;; Gravity Variation
