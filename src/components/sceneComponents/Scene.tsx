@@ -27,14 +27,7 @@ function WasmBox() {
     }, [state.launched, launch])
 
     useFrame((state) => {
-        if (meshRef.current && wasm?.add) {
-            // Use WASM to calculate position
-            const time = Math.floor(state.clock.elapsedTime);
-            const calculated = wasm.add(time, 10);
-            setResult(calculated);
-            
-            meshRef.current.position.y = Math.sin(state.clock.elapsedTime) * 2;
-        }
+        
     })
 
     if (loading) return <Text position={[0, 0, 0]} fontSize={0.5}>Loading WASM...</Text>
