@@ -50,14 +50,16 @@
 */
 .launch_timer_container {
     width: 10rem;
-    height: 3rem;
+    height: fit-content;
     position: absolute;
 
     display: flex;
-    justify-content: left;
-    align-items: center;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
 
-    gap: 2rem;
+    gap: 0.1rem;
+    padding: 0.5rem;
     color: var(--text-color);
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 4px;
@@ -67,6 +69,35 @@
     z-index: 1000;
 }
 
-.missionTime {
-    padding-left: 1rem;
+.fuel_container {
+    height: 0.5rem;
+    background-color: rgba(255, 88, 88, 0.75);
+}
+
+/* 
+*   Launch Timer
+*/
+.end_interface {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    top: 0;
+    left: 0;
+}
+
+.end_container {
+    width: 60%;
+    height: 30rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text-color);
 }

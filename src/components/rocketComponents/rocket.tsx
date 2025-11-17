@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef } from "react";
 import type { Mesh } from "three";
 import { Vector3, Camera } from "three";
 import type { RocketProps } from "../../utils/types/missionTypes";
+import { useWasm } from "../../hooks/useWasm";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
@@ -13,6 +14,7 @@ const initialCameraLookAt = new Vector3();
 const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
     const { scene } = useGLTF('./rocketship.glb', true, false);
+	const { wasm, loading, error } = useWasm('/wasm/rocketPhysics.wasm');
 	
 	// Camera States
 	const cameraPosition = useRef<Camera | null>(null);

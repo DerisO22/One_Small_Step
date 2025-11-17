@@ -7,7 +7,7 @@ const LaunchInterface = () => {
 
     return (
         <>
-            { state.launched && state.fuel > 0 ? (
+            { !state.launched && state.fuel > 0 ? (
                 <>
                     {/* Probably just velocity and altitude for now */}
                     <div className="rocket_measurements_container">
@@ -26,14 +26,28 @@ const LaunchInterface = () => {
                         </div>
                     </div>
 
+                    {/* Timer and Fuel */}
                     <div className="launch_timer_container">
-                        <p className="missionTime text">{state.missionTime}</p>
+                        <span className="missionTime text">T - {state.missionTime}</span>
+
+                        <span className="">
+                            Fuel Left
+                        </span>
+
+                        <div className="fuel_container" style={{width: (state.fuel / 114)}}></div>
+                    </div>
+
+                    <div className="low_fuel_warning_container">
+                        <span className="text">Critical: Low Fuel</span>
+
                     </div>
                 </>
             ) : (
                 // End Screen Interface
-                <div className="end_container">
-                    
+                <div className="end_interface">
+                    <div className="end_container">
+                        <span className="text">Mission Something!</span>
+                    </div>
                 </div>
             )}
         </>
