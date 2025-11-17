@@ -1,8 +1,12 @@
 (module
+    (import "Math" "exp" (func $exp (param f32) (result f32)))
+
     ;;
-    ;; Compute Atmospheric Drag
-    ;; formula being used:
-    ;; 
+    ;;
+    ;;  Force Calculations
+    ;;
+    ;;
+    ;; Atmospheric Drag
     (func $compute_atmospheric_drag (export "compute_atmospheric_drag")
         ;; Params
         (param $drag_coefficient f32)
@@ -18,26 +22,7 @@
         (f32.add)
     )
 
-    ;;
-    ;; Compute rocket's reference area
-    ;; formula being used:
-    ;;
-    (func $compute_reference_area (export "compute_reference_area")
-        ;; Params
-        (param $volume_of_rocket f32)
-
-        ;; Return Type
-        (result f32)
-
-        (local.get $volume_of_rocket)
-        (f32.const 2)
-        (f32.mul)
-    )
-
-    ;;
-    ;;
-    ;;
-    ;;
+    ;; Gravity Variation
     (func $compute_gravity_variation (export "compute_gravity_variation")
         ;; Params
         (param $gravitational_constant f32)
@@ -52,10 +37,7 @@
         (f32.mul)
     )
 
-    ;;
-    ;; Compute the rocket's thrust
-    ;; formula being used:
-    ;;
+    ;; Rocket Thrust
     (func $compute_thrust (export "compute_thrust")
         ;; Params
         (param $mass_flow_rate f32)
@@ -64,16 +46,12 @@
         ;; Return Type
         (result f32)
 
+        (local.get $mass_flow_rate)
         (local.get $exhaust_velocity)
-        (f32.const 2)
         (f32.mul)
     )
 
-    ;;
-    ;; Compute Net Force of Rocket
-    ;; Formula being used:
-    ;; Net_Force = F_Thrust - F_Drag - F_Gravity
-    ;;
+    ;; Net Force of Rocket
     (func $compute_net_force (export "compute_net_force")
         ;; Params
         (param $thrust_force f32)
@@ -87,8 +65,93 @@
         (local.get $thrust_force)
         (local.get $drag_force)
         (i32.sub)
-        
+
         (local.get $force_of_gravity)
         (i32.sub)
+    )
+
+    ;;
+    ;;
+    ;;  Kinematics
+    ;;
+    ;;
+    (func $compute_acceleration (export "compute_acceleration")
+        ;; Params
+        (param $net_force f32)
+        (param $mass f32)
+
+        ;; Return Type
+        (return f32)
+
+        ;; Calculations
+        (local.get $net_force)
+        (local.get $mass)
+        (f32.div)
+    )
+
+    ;;
+    ;;
+    ;;  Supporting Calculations
+    ;;
+    ;;
+    ;; Compute rocket's reference area
+    (func $compute_reference_area (export "compute_reference_area")
+        ;; Params
+        (param $rocket_radius f32)
+
+        ;; Return Type
+        (result f32)
+
+        (local.get $rocket_radius)
+        (f32.const 2)
+        (f32.mul)
+    )
+
+    (func $compute_air_density (export "compute_air_density")
+        ;; Params
+        (param $altitude f32)
+
+        ;; Return Type
+        (return f32)
+
+        ;; Helper values:
+        ;; sea level air density = 1.225 kg/m^3
+        ;; scale height = 8,500 meters
+        ;; e = 2.71728
+        (local $sea_level_air_density f32)
+        (local $scale_height f32)
+        (local $e f32)
+        (local $exponent f32)
+
+        (local.set $sea_level_air_density (f32.const 1.225))
+        (local.set $scale_height (f32.const 8500))
+        (local.set $e (f32.const 2.71728))
+
+        ;; Calculations
+        (local.get $altitude)
+        (local.get $scale_height)
+        (f32.div)
+        (f32.neg)
+        (local.set $exponent)
+
+        (local.get $exponent)
+        (call $exp)
+
+        (local.get $sea_level_air_density)
+        (f32.mul)
+    )
+
+    (func $compute_mass_flow_rate (export "compute_mass_flow_rate")
+        ;; Params
+        (param $burn_rate f32)
+        (param $throttle f32)
+
+        ;; Return Type
+        (return f32)
+
+        ;; Calculations
+        (local.get $burn_rate)
+        (local.get $throttle)
+        (f32.mul)
     )
 )
