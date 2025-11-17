@@ -3,11 +3,15 @@ import './styles/launch.css';
 import '../../index.css';
 
 const LaunchInterface = () => {
-    const { state } = useMission();
+    const { state, reset } = useMission();
+
+    const restartMission = () => {
+        reset();
+    }
 
     return (
         <>
-            { !state.launched && state.fuel > 0 ? (
+            {(state.launched && state.fuel > 0) ? (
                 <>
                     {/* Probably just velocity and altitude for now */}
                     <div className="rocket_measurements_container">
@@ -43,12 +47,17 @@ const LaunchInterface = () => {
                     </div>
                 </>
             ) : (
-                // End Screen Interface
-                <div className="end_interface">
+                state.altitude > 0 ? (
+                    // End Screen Interface
                     <div className="end_container">
-                        <span className="text">Mission Something!</span>
+                        <span className="text">End of Mission</span>
+                        <div onClick={reset} className="restart_button header1">
+                            Restart
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <></>
+                )
             )}
         </>
     )
