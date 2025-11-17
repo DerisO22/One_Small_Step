@@ -32,9 +32,21 @@
         ;; Return Type
         (result f32)
 
-        (local.get $gravitational_constant)
-        (f32.const 2)
+        ;; vars
+        (local $radius_squared f32)
+
+        ;; Calculations
+        (local.get $distance_from_center)
+        (local.get $distance_from_center)
         (f32.mul)
+        (local.set $radius_squared)
+
+        (local.get $gravitational_constant)
+        (local.get $mass_of_earth)
+        (f32.mul)
+
+        (local.get $radius_squared)
+        (f32.div)
     )
 
     ;; Rocket Thrust
@@ -46,6 +58,7 @@
         ;; Return Type
         (result f32)
 
+        ;; Calculations
         (local.get $mass_flow_rate)
         (local.get $exhaust_velocity)
         (f32.mul)
@@ -61,7 +74,7 @@
         ;; Return Type
         (result f32)
 
-        ;; Calculation
+        ;; Calculations
         (local.get $thrust_force)
         (local.get $drag_force)
         (i32.sub)
@@ -138,6 +151,7 @@
         ;; Return Type
         (result f32)
 
+        ;; Calculations
         (local.get $rocket_radius)
         (f32.const 2)
         (f32.mul)
