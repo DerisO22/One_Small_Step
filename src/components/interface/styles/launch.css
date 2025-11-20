@@ -118,7 +118,6 @@
     transform: scale(0.9);
 }
 
-
 @media screen and (max-width: 824px) {
     .end_container {
         width: 80%;

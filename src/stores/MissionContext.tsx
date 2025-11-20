@@ -14,8 +14,8 @@ export const MissionProvider = ({children}: MissionProviderProps) => {
         missionTime: 0,
         altitude: 0,
         velocity: 0,
-        fuel: 18000,
-        mass: 20000
+        fuel: 24000,
+        mass: 26000
     });
 
     const launch = useCallback(() => {
@@ -32,8 +32,8 @@ export const MissionProvider = ({children}: MissionProviderProps) => {
             missionTime: 0,
             altitude: 0,
             velocity: 0,
-            fuel: 18000,
-            mass: 20000
+            fuel: 24000,
+            mass: 26000
         })
     }, []);
 

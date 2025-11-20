@@ -15,7 +15,7 @@ const LaunchInterface = () => {
                         <div className="velocity_tracker_container">
                             <span className="velocity_tracker">Velocity</span>
                             <div className="text_xs">{state.velocity}</div>
-                            <span className="velocity_tracker">KM / H</span>
+                            <span className="velocity_tracker">KM / s</span>
                         </div>    
 
                         {/* Altitude */}
@@ -34,7 +34,7 @@ const LaunchInterface = () => {
                             Fuel Left
                         </span>
 
-                        <div className="fuel_container" style={{width: (state.fuel / 114)}}></div>
+                        <div className="fuel_container" style={{width: (state.fuel / 154)}}></div>
                     </div>
 
                     <div className="low_fuel_warning_container">
