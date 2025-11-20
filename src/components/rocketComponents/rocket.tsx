@@ -152,7 +152,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				return;
 			}
 			
-			// Net force (thrust upward, drag and gravity downward)
+			// Net force
 			const netForce = thrustForce - dragForce - gravityForce;
 			
 			// Calculate new physics state
@@ -160,11 +160,9 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// Apply ramp-up during first 2000 frames
 			acceleration *= rampMultiplier;
-			
 			acceleration = Math.max(-MAX_ACCELERATION, Math.min(MAX_ACCELERATION, acceleration));
-			
+
 			let newVelocity = velocity + (acceleration * rampedDelta);
-			
 			newVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, newVelocity));
 			
 			// Ground collision check
@@ -172,7 +170,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				newVelocity = 0;
 			}
 			
-			// Apply to Rapier - only set velocity, let Rapier handle position
+			// Apply to Rapier
 			body.current.setLinvel({ 
 				x: 0,
 				y: newVelocity, 
