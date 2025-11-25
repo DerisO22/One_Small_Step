@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { useMission } from "../../stores/MissionContext";
 import './styles/preLaunch.css';
 import '../../index.css';
+import { Leva } from "leva";
 
 const PreLaunchInterface = () => {
     const [ instructions_visible, setInstructions_visible ] = useState<boolean>(false);
-    // Gotta make this into a global context instead of just the hook
-    // so I can make sure all components can get that missionState
     const { state, launch } = useMission();
 
     useEffect(() => {
@@ -38,7 +37,11 @@ const PreLaunchInterface = () => {
                     <div className="launch_button_container">
                         <div onClick={launch} className="launch_button">Launch</div>    
                     </div>
-                    
+
+                    {/* Debug Menu */}
+					<div className='levaDebug_Menu'>
+						{state.launched ? <></> : <Leva fill collapsed/>}
+					</div>
                 </>
             ) : null}
         </>

@@ -1,11 +1,12 @@
 import { Text, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { Mesh } from "three";
 import { Vector3, Camera } from "three";
 import type { RocketProps } from "../../utils/types/missionTypes";
 import { useWasm } from "../../hooks/useWasm";
+import { useControls } from "leva";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
@@ -15,33 +16,48 @@ const initialCameraLookAt = new Vector3();
  * Scale of System 1:10
  */
 
-// Constants for Saturn V 
+// Constants for Saturn V that won't be changeable through debug
 const SCALE_FACTOR = 10;
 const ROCKET_RADIUS = 5.05 / SCALE_FACTOR; 
-const DRAG_COEFFICIENT = 0.75;
 
-// Physics constants
-const EXHAUST_VELOCITY = 2260;
-const BURN_RATE = 200; 
-const THROTTLE = 1.0; 
-const DRY_MASS = 2000; 
-
-// Gravity constants 
-const SURFACE_GRAVITY = 9.8; 
-// Earth Measurements since things are offset a bit
+// Earth constants that won't be changeable through debug
 const EARTH_RADIUS = 637.1; 
-const EARTH_CENTER_Y = -29.67; 
-const SURFACE_Y = EARTH_CENTER_Y + EARTH_RADIUS; 
-
-// Safety limits
-const MAX_DELTA = 0.1; 
-const MAX_VELOCITY = 12000; 
-const MAX_ACCELERATION = 0.04; 
 
 const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
     const { scene } = useGLTF('./rocketship.glb', true, false);
 	const { wasm, loading, error } = useWasm('/wasm/rocketPhysics.wasm');
+	
+	/**
+	 *  Leva Debug Menu Options
+	 */
+	const debug_rocket_options = useMemo(() => {
+		return {
+			DRAG_COEFFICIENT: { value: 0.75, min: 0, max: 10, step: 0.01 },
+			EXHAUST_VELOCITY: { value: 2260, min: 1000, max: 4000, step: 1 },
+			BURN_RATE: { value: 200, min: 50, max: 500, step: 0.1},
+			THROTTLE: { value: 1.0, min: 0.25, max: 4, step: 0.01},
+			DRY_MASS: { value: 2000, min: 500, max: 5000, step: 1},
+		}
+	}, []);
+
+	const debug_physics_options = useMemo(() => {
+		return {
+			SURFACE_GRAVITY: { value: 9.8, min: 5, max: 20, step: 0.01},
+		}
+	}, []);
+
+	const debug_clamp_options = useMemo(() => {
+		return {
+			MAX_DELTA: { value: 0.1, min: 0.1, max: 1, step: 0.01 },
+			MAX_VELOCITY: { value: 12000, min: 5000, max: 20000, step: 1 },
+			MAX_ACCELERATION: { value: 0.04, min: 0.04, max: .5, step: 0.005 }
+		}
+	}, []);
+
+	const { DRAG_COEFFICIENT, EXHAUST_VELOCITY, BURN_RATE, THROTTLE, DRY_MASS } = useControls(debug_rocket_options);
+	const { SURFACE_GRAVITY } = useControls(debug_physics_options);
+	const { MAX_DELTA, MAX_VELOCITY, MAX_ACCELERATION } = useControls(debug_clamp_options);
 	
 	// Camera States
 	const cameraPosition = useRef<Camera | null>(null);

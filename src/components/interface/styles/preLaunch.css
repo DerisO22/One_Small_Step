@@ -96,3 +96,17 @@
 .launch_button:active {
     transform: scale(0.9);
 }
+
+/* 
+*  Debug Menu
+*/
+
+.levaDebug_Menu {
+	position: absolute;
+	top: 0.3rem;
+	left: 0.3rem;
+	
+	width: fit-content;
+	height: fit-content;
+	z-index: 999;
+}

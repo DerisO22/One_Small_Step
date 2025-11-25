@@ -12,6 +12,7 @@ function App() {
 		<>
 			<MissionProvider>
 				<div style={{ width: '100vw', height: '100vh' }}>
+					
 					<Canvas
 						camera={{ position: [1000, 1000, 5], fov: 90 }}
 						shadows
