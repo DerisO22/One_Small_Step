@@ -35,7 +35,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		return {
 			DRAG_COEFFICIENT: { value: 0.75, min: 0, max: 10, step: 0.01 },
 			EXHAUST_VELOCITY: { value: 2260, min: 1000, max: 4000, step: 1 },
-			BURN_RATE: { value: 200, min: 50, max: 500, step: 0.1},
+			BURN_RATE: { value: 200, min: 50, max: 4000, step: 0.1},
 			THROTTLE: { value: 1.0, min: 0.25, max: 4, step: 0.01},
 			DRY_MASS: { value: 2000, min: 500, max: 5000, step: 1},
 		}
@@ -55,9 +55,9 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		}
 	}, []);
 
-	const { DRAG_COEFFICIENT, EXHAUST_VELOCITY, BURN_RATE, THROTTLE, DRY_MASS } = useControls(debug_rocket_options);
-	const { SURFACE_GRAVITY } = useControls(debug_physics_options);
-	const { MAX_DELTA, MAX_VELOCITY, MAX_ACCELERATION } = useControls(debug_clamp_options);
+	const { DRAG_COEFFICIENT, EXHAUST_VELOCITY, BURN_RATE, THROTTLE, DRY_MASS } = useControls("Rocket Options", debug_rocket_options);
+	const { SURFACE_GRAVITY } = useControls("Earth Options", debug_physics_options);
+	const { MAX_DELTA, MAX_VELOCITY, MAX_ACCELERATION } = useControls("Clamp Options", debug_clamp_options);
 	
 	// Camera States
 	const cameraPosition = useRef<Camera | null>(null);
@@ -77,7 +77,15 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				child.receiveShadow = true;
 			}
 		})
-    }, [scene])
+    }, [scene]);
+
+	useEffect(() => {
+		if (!launched && body.current) {
+			body.current.setTranslation({ x: 0, y: 0, z: 0}, true);
+			body.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+			body.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
+		}
+	})
 
 	const updateFrame = useCallback(({ camera, delta }: { camera: Camera; delta: number }) => {
 		// CAMERA
