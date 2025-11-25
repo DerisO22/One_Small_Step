@@ -21,7 +21,7 @@ const ROCKET_RADIUS = 5.05 / SCALE_FACTOR;
 const DRAG_COEFFICIENT = 0.75;
 
 // Physics constants
-const EXHAUST_VELOCITY = 2600;
+const EXHAUST_VELOCITY = 2260;
 const BURN_RATE = 200; 
 const THROTTLE = 1.0; 
 const DRY_MASS = 2000; 
@@ -36,7 +36,7 @@ const SURFACE_Y = EARTH_CENTER_Y + EARTH_RADIUS;
 // Safety limits
 const MAX_DELTA = 0.1; 
 const MAX_VELOCITY = 12000; 
-const MAX_ACCELERATION = 500; 
+const MAX_ACCELERATION = 0.04; 
 
 const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
@@ -78,7 +78,9 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		// WASM Physics
 		if(launched && body.current && missionState.fuel > 0 && wasm) {
 			// Clamp delta time to prevent absurd values
-			const safeDelta = Math.min(delta, MAX_DELTA);
+			const safeDelta  = Math.min(delta, MAX_DELTA);
+
+			missionState.missionTime += safeDelta;
 			
 			// Skip first frame to avoid huge delta time spike
 			if (firstPhysicsFrame.current) {
@@ -106,7 +108,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			}
 			
 			// Current altitude above Earth's surface
-			const altitude = Math.max(0, currentPos.y - SURFACE_Y); 
+			const altitude = Math.max(0, currentPos.y); 
 			const distanceFromCenter = EARTH_RADIUS + altitude;
 			
 			// Current velocity
@@ -182,9 +184,10 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			const newFuel = Math.max(0, missionState.fuel - fuelConsumed);
 			const newMass = DRY_MASS + newFuel;
 			
-			// Update mission state (use actual position from Rapier for accuracy)
+			// Update mission state
 			updateMission({
 				fuel: newFuel,
+				missionTime: missionState.missionTime,
 				mass: newMass,
 				altitude: altitude,
 				velocity: newVelocity
@@ -207,16 +210,16 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			type={launched ? "kinematicVelocity" : "kinematicPosition"}
 			ref={body}
 		>
-			<group position={[-0.044, 607.465, -4.009]}>
+			<group position={[-0.017, 607.435, -4.001]}>
 				<primitive
 					object={ scene }
-					scale={[.0025, .0025, .0025]}
+					scale={[.0008, .0008, .0008]}
 				/>
-				<Text color="white" fontSize={0.025} rotation={[0, Math.PI, 0]} position={[-0.1, 0.15, 0]}>
+				<Text color="white" fontSize={0.008} rotation={[0, Math.PI, 0]} position={[-0.03, 0.04, 0]}>
 					Saturn V
 				</Text>
-				<group ref={cameraTarget} position-z={0.4} />
-            	<group ref={cameraPosition} position-y={0.2} position-z={-0.3} />
+				<group ref={cameraTarget} position-z={0.3} />
+            	<group ref={cameraPosition} position-y={0.1} position-z={-0.15} />
 			</group>
 		</RigidBody>
     )

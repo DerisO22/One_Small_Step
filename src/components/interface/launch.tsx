@@ -14,7 +14,7 @@ const LaunchInterface = () => {
                         {/* Velocity */}
                         <div className="velocity_tracker_container">
                             <span className="velocity_tracker">Velocity</span>
-                            <div className="text_xs">{state.velocity}</div>
+                            <div className="text_xs">{String(state.velocity).slice(0, 10)}</div>
                             <span className="velocity_tracker">KM / s</span>
                         </div>    
 
@@ -28,7 +28,7 @@ const LaunchInterface = () => {
 
                     {/* Timer and Fuel */}
                     <div className="launch_timer_container">
-                        <span className="missionTime text">T - {state.missionTime}</span>
+                        <span className="missionTime text">T + {String(state.missionTime).slice(0, 8)}</span>
 
                         <span className="">
                             Fuel Left
