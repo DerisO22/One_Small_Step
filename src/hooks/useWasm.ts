@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import type { WasmModule } from '../utils/types/wasmModule';
 
+const importObjects = {
+    Math: {
+        exp: Math.exp
+    }
+};
+
 export function useWasm(wasmPath: string) {
     const [wasm, setWasm] = useState<WasmModule | null>(null);
     const [loading, setLoading] = useState(true);
@@ -11,7 +17,7 @@ export function useWasm(wasmPath: string) {
             try {
                 const response = await fetch(wasmPath);
                 const buffer = await response.arrayBuffer();
-                const wasmModule = await WebAssembly.instantiate(buffer, {});
+                const wasmModule = await WebAssembly.instantiate(buffer, importObjects);
                 setWasm(wasmModule.instance.exports as WasmModule);
                 setLoading(false);
             } catch (err) {

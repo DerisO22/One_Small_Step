@@ -12,6 +12,7 @@ function App() {
 		<>
 			<MissionProvider>
 				<div style={{ width: '100vw', height: '100vh' }}>
+					
 					<Canvas
 						camera={{ position: [1000, 1000, 5], fov: 90 }}
 						shadows
@@ -44,8 +45,8 @@ function App() {
 						<OrbitControls 
 							enableDamping 
 							dampingFactor={0.05}
-							rotateSpeed={0.001}
-							panSpeed={0.01}
+							rotateSpeed={0.01}
+							panSpeed={.01}
 							zoomSpeed={.001}
 							// minDistance={10}
 							// maxDistance={500}

@@ -50,14 +50,16 @@
 */
 .launch_timer_container {
     width: 10rem;
-    height: 3rem;
+    height: fit-content;
     position: absolute;
 
     display: flex;
-    justify-content: left;
-    align-items: center;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
 
-    gap: 2rem;
+    gap: 0.1rem;
+    padding: 0.5rem;
     color: var(--text-color);
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 4px;
@@ -67,6 +69,57 @@
     z-index: 1000;
 }
 
-.missionTime {
-    padding-left: 1rem;
+.fuel_container {
+    height: 0.5rem;
+    background-color: rgba(255, 88, 88, 0.75);
+}
+
+/* 
+*   Launch Timer
+*/
+.end_container {
+    width: 30rem; 
+    height: 20rem;
+    position: absolute;
+
+    top: 25vh;
+    left: 50%;
+    margin: auto;
+    transform: translateX(-50%);
+
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text-color);
+}
+
+.end_message {
+    margin-top: 2rem;
+}
+
+.restart_button {
+    width: 10rem;
+    height: fit-content;
+    padding-top: 0.2rem;
+    user-select: none;
+
+    background-color: rgba(248, 50, 50, 0.759);
+    transition: all 0.3s ease-in-out;
+}
+
+.restart_button:hover {
+    transform: scale(1.1);
+}
+
+.restart_button:active {
+    transform: scale(0.9);
+}
+
+@media screen and (max-width: 824px) {
+    .end_container {
+        width: 80%;
+    }
 }
