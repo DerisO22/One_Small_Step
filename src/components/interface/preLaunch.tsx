@@ -8,11 +8,43 @@ const PreLaunchInterface = () => {
     const [ instructions_visible, setInstructions_visible ] = useState<boolean>(false);
     const { state, launch } = useMission();
     const rocketLaunchSound = useRef<HTMLAudioElement | null>(null);
+    const hasPlayedOnce = useRef<boolean>(false);
+
+    useEffect(() => {
+        rocketLaunchSound.current = new Audio('/sfx/InitLaunch.wav');
+        rocketLaunchSound.current.volume = 0.4;
+        rocketLaunchSound.current.load();
+
+        const handleTimeUpdate = () => {
+            if (!rocketLaunchSound.current || !state.launched) return;
+
+            const audio = rocketLaunchSound.current;
+            const duration = audio.duration;
+            const currentTime = audio.currentTime;
+
+            if (hasPlayedOnce.current && currentTime >= duration - 0.5) {
+                audio.currentTime = Math.max(0, duration - 10);
+            } else if (!hasPlayedOnce.current && currentTime >= duration - 10) {
+                hasPlayedOnce.current = true;
+            }
+        }
+
+        rocketLaunchSound.current?.addEventListener('timeupdate', handleTimeUpdate);
+
+        return () => {
+            if (rocketLaunchSound.current) {
+                rocketLaunchSound.current.removeEventListener('timeupdate', handleTimeUpdate);
+                rocketLaunchSound.current.pause();
+                rocketLaunchSound.current = null;
+            }
+        };
+    }, [state.launched]);
 
     useEffect(() => {
         if (state.launched && rocketLaunchSound.current) {
             // Reset audio to beginning before playing
             rocketLaunchSound.current.currentTime = 0;
+            hasPlayedOnce.current = false;
             rocketLaunchSound.current.play().catch((error) => {
                 console.error('Failed to play launch sound:', error);
             });
@@ -20,30 +52,14 @@ const PreLaunchInterface = () => {
             // Stop and reset audio when mission is reset
             rocketLaunchSound.current.pause();
             rocketLaunchSound.current.currentTime = 0;
+            hasPlayedOnce.current = false;
         }
     }, [state.launched]);
 
-    useEffect(() => {
-        rocketLaunchSound.current = new Audio('/sfx/InitLaunch.wav');
-        rocketLaunchSound.current.volume = 0.4;
-        rocketLaunchSound.current.load();
-
-        return () => {
-            if (rocketLaunchSound.current) {
-                rocketLaunchSound.current.pause();
-                rocketLaunchSound.current = null;
-            }
-        };
-    }, []);
+    
 
     const toggle_Instructions = () => {
         setInstructions_visible(prev => !prev);
-
-        if (state.launched && rocketLaunchSound.current) {
-            rocketLaunchSound.current.play().catch((error) => {
-                console.error('Failed to play launch sound:', error);
-            });
-        }
     };
 
     return (
