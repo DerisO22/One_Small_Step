@@ -7,6 +7,7 @@ import { Vector3, Camera } from "three";
 import type { RocketProps } from "../../utils/types/missionTypes";
 import { useWasm } from "../../hooks/useWasm";
 import { useControls } from "leva";
+import RocketExhaustFlames from "./rocketExhaustFlames";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
@@ -245,6 +246,8 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				}
 				<group ref={cameraTarget} position-z={0.3} />
             	<group ref={cameraPosition} position-y={0.1} position-z={-0.15} />
+
+				<RocketExhaustFlames />
 			</group>
 		</RigidBody>
     )
