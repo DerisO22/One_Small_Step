@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMission } from "../../stores/MissionContext";
 import './styles/preLaunch.css';
 import '../../index.css';
@@ -7,13 +7,43 @@ import { Leva } from "leva";
 const PreLaunchInterface = () => {
     const [ instructions_visible, setInstructions_visible ] = useState<boolean>(false);
     const { state, launch } = useMission();
+    const rocketLaunchSound = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
-
+        if (state.launched && rocketLaunchSound.current) {
+            // Reset audio to beginning before playing
+            rocketLaunchSound.current.currentTime = 0;
+            rocketLaunchSound.current.play().catch((error) => {
+                console.error('Failed to play launch sound:', error);
+            });
+        } else if (!state.launched && rocketLaunchSound.current) {
+            // Stop and reset audio when mission is reset
+            rocketLaunchSound.current.pause();
+            rocketLaunchSound.current.currentTime = 0;
+        }
     }, [state.launched]);
+
+    useEffect(() => {
+        rocketLaunchSound.current = new Audio('/sfx/InitLaunch.wav');
+        rocketLaunchSound.current.volume = 0.4;
+        rocketLaunchSound.current.load();
+
+        return () => {
+            if (rocketLaunchSound.current) {
+                rocketLaunchSound.current.pause();
+                rocketLaunchSound.current = null;
+            }
+        };
+    }, []);
 
     const toggle_Instructions = () => {
         setInstructions_visible(prev => !prev);
+
+        if (state.launched && rocketLaunchSound.current) {
+            rocketLaunchSound.current.play().catch((error) => {
+                console.error('Failed to play launch sound:', error);
+            });
+        }
     };
 
     return (
