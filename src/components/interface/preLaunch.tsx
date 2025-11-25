@@ -56,8 +56,6 @@ const PreLaunchInterface = () => {
         }
     }, [state.launched]);
 
-    
-
     const toggle_Instructions = () => {
         setInstructions_visible(prev => !prev);
     };

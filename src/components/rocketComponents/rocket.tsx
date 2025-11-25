@@ -102,8 +102,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		// WASM Physics
 		if(launched && body.current && missionState.fuel > 0 && wasm) {
 			// Clamp delta time to prevent absurd values
-			const safeDelta  = Math.min(delta, MAX_DELTA);
-
+			const safeDelta = Math.min(delta, MAX_DELTA);
 			missionState.missionTime += safeDelta;
 			
 			// Skip first frame to avoid huge delta time spike
@@ -239,9 +238,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 					object={ scene }
 					scale={[.0008, .0008, .0008]}
 				/>
+				{ missionState.altitude ? <></> :
 				<Text color="white" fontSize={0.008} rotation={[0, Math.PI, 0]} position={[-0.03, 0.04, 0]}>
 					Saturn V
 				</Text>
+				}
 				<group ref={cameraTarget} position-z={0.3} />
             	<group ref={cameraPosition} position-y={0.1} position-z={-0.15} />
 			</group>
