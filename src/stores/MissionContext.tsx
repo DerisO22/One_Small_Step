@@ -11,7 +11,7 @@ interface MissionProviderProps {
 export const MissionProvider = ({children}: MissionProviderProps) => {
     const [ state, setState ] = useState<MissionState>({
         launched: false,
-        missionTime: 0,
+        missionTime: -4,
         altitude: 0,
         velocity: 0,
         fuel: 24000,
@@ -29,7 +29,7 @@ export const MissionProvider = ({children}: MissionProviderProps) => {
     const reset = useCallback(() => {
         setState({
             launched: false,
-            missionTime: 0,
+            missionTime: -4,
             altitude: 0,
             velocity: 0,
             fuel: 24000,

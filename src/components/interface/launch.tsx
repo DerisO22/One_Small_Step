@@ -28,7 +28,7 @@ const LaunchInterface = () => {
 
                     {/* Timer and Fuel */}
                     <div className="launch_timer_container">
-                        <span className="missionTime text">T + {String(state.missionTime).slice(0, 8)}</span>
+                        <span className="missionTime text">T {state.missionTime > 0 ? " + " : " - "} {state.missionTime > 0 ? String(state.missionTime).slice(0, 8) : String(state.missionTime).slice(1, 8)}</span>
 
                         <span className="">
                             Fuel Left

@@ -3,6 +3,7 @@ import { useMission } from "../../stores/MissionContext";
 import './styles/preLaunch.css';
 import '../../index.css';
 import { Leva } from "leva";
+import { startCountdown } from "../../utils/functions/startCountdown";
 
 const PreLaunchInterface = () => {
     const [ instructions_visible, setInstructions_visible ] = useState<boolean>(false);
@@ -79,7 +80,10 @@ const PreLaunchInterface = () => {
                     ) : (<></>)}
 
                     <div className="launch_button_container">
-                        <div onClick={launch} className="launch_button">Launch</div>    
+                        <div onClick={() => {
+                            launch();
+                            startCountdown();
+                        }} className="launch_button">Launch</div>    
                     </div>
 
                     {/* Debug Menu */}
