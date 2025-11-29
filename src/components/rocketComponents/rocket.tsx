@@ -216,15 +216,13 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			// Calculate target pitch based on mission time 
 			let targetPitch = 0;
 			if (missionState.missionTime > 10 && missionState.missionTime <= 60) {
-				// Gradual pitch from 0° to 45° over 50 seconds
 				targetPitch = (Math.PI / 4) * ((missionState.missionTime - 10) / 50);
 			} else if (missionState.missionTime > 60) {
-				// Continue pitching toward horizontal
 				const additionalTime = missionState.missionTime - 60;
 				targetPitch = (Math.PI / 4) + (Math.PI / 4) * Math.min(additionalTime / 90, 1);
 			}
 			
-			// Simple proportional control for torque
+			// control for torque
 			const pitchError = targetPitch - currentPitch;
 			const controlTorque = pitchError * GIMBAL_TORQUE;
 			
@@ -233,23 +231,18 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// Update angular velocity: ω_new = ω + α * Δt
 			let newAngularVel = currentAngularVel + (angularAcceleration * rampedDelta);
-			
-			// Apply damping to prevent oscillation
 			newAngularVel *= 0.95;
 			
-			// Update pitch angle: θ_new = θ + ω * Δt
+			// θ_new = θ + ω * Δt
 			const newPitch = currentPitch + (newAngularVel * rampedDelta);
 			
-			// Apply rotation to Rapier body (pitch around Z-axis)
+			// Apply rotation 
 			const quaternion = new THREE.Quaternion();
 			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), newPitch);
 			body.current.setRotation(quaternion, true);
 			
 			// Decompose thrust into components based on pitch
 			const thrustVertical = thrustForce * Math.cos(newPitch);
-			const thrustHorizontal = thrustForce * Math.sin(newPitch);
-			
-			// Recalculate net force with pitched thrust
 			const netForceVertical = thrustVertical - dragForce - gravityForce;
 			
 			// Recalculate acceleration with new net force

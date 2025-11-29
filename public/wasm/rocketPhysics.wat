@@ -275,7 +275,7 @@
         (f32.const 2)
         (f32.mul)
 
-        (local.get $missionTime)
+        (local.get $additionalTime)
         (f32.const 90)
         (f32.div)
         (f32.const 1)
