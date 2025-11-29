@@ -68,7 +68,7 @@ const RocketExhaustFlames = () => {
         const positions = particlesRef.current.geometry.attributes.position.array as Float32Array;
         const colors = particlesRef.current.geometry.attributes.customColor.array as Float32Array;
         const velocities = velocitiesRef.current;
-        const coneAngle = 40;
+        const coneAngle = 50;
 
         for (let i = 0; i < totalParticles; i++) {
             const i3 = i * 3;
@@ -82,11 +82,11 @@ const RocketExhaustFlames = () => {
 
             // fade between colors
             const distanceTraveled = Math.abs(positions[i3 + 1] + 0.03);
-            const fadeAmount = Math.min(distanceTraveled / 0.07, 1.0);
+            const fadeAmount = Math.min(distanceTraveled / 5, 1.0);
 
-            colors[i3] = 1.0;
-            colors[i3 + 1] = Math.max(0.2, 0.95 - fadeAmount * 0.75);
-            colors[i3 + 2] = Math.max(0.0, 0.7 - fadeAmount * 0.7);
+            colors[i3] = 1;
+            colors[i3 + 1] = 0.2;
+            colors[i3 + 2] = 0.1;
             
             // Reset particles that have moved too far down
             if (positions[i3 + 1] < -0.1) {
