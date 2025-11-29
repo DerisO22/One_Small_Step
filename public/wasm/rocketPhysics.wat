@@ -225,4 +225,62 @@
         (local.get $throttle)
         (f32.mul)
     )
+
+    ;;
+    ;;
+    ;;  Rotational Physics
+    ;;
+    ;;
+    (func $compute_first_half_target_pitch (export "compute_first_half_target_pitch")
+        ;; Pararms
+        (param $missionTime f32)
+
+        ;; Return Type
+        (result f32)
+
+        (local $pi f32)
+        (f32.const 3.1415968)
+        (local.set $pi)
+
+        ;; Calculations
+        ;; PI / 4
+        (local.get $pi)
+        (f32.const 4)
+        (f32.div)
+        
+        (local.get $missionTime)
+        (f32.const 10)
+        (f32.sub)
+        (f32.const 50)
+        (f32.div)
+
+        (f32.mul)
+    )
+
+    (func $compute_second_half_target_pitch (export "compute_second_half_target_pitch")
+        ;; Params
+        (param $additionalTime f32)
+
+        ;; Return Type
+        (result f32)
+
+        (local $pi f32)
+        (f32.const 3.1415968)
+        (local.set $pi)
+
+        ;; Calcualtions
+        (local.get $pi)
+        (f32.const 4)
+        (f32.div)
+        (f32.const 2)
+        (f32.mul)
+
+        (local.get $missionTime)
+        (f32.const 90)
+        (f32.div)
+        (f32.const 1)
+        (f32.min)
+
+        (f32.mul)
+    )
 )

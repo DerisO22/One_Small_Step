@@ -16,6 +16,9 @@ export const MissionProvider = ({children}: MissionProviderProps) => {
         velocity: 0,
         fuel: 24000,
         mass: 26000,
+        pitchAngle: 0,
+        angularVelocity: 0,
+        targetPitch: 0,
     });
 
     const launch = useCallback(() => {
@@ -34,6 +37,9 @@ export const MissionProvider = ({children}: MissionProviderProps) => {
             velocity: 0,
             fuel: 24000,
             mass: 26000,
+            pitchAngle: 0,
+            angularVelocity: 0,
+            targetPitch: 0,
         })
     }, []);
 

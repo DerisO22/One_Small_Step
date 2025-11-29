@@ -20,7 +20,7 @@ const Earth = () => {
                     <EarthMaterial />
                 </mesh>
             </RigidBody>
-            <AtmosphereMesh radius={radius * 1.12}/>
+            <AtmosphereMesh radius={radius * 1.18}/>
         </>
     )
 }

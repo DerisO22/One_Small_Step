@@ -4,6 +4,7 @@ import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { Mesh } from "three";
 import { Vector3, Camera } from "three";
+import * as THREE from "three";
 import type { RocketProps } from "../../utils/types/missionTypes";
 import { useWasm } from "../../hooks/useWasm";
 import { useControls } from "leva";
@@ -27,7 +28,7 @@ const EARTH_RADIUS = 637.1;
 const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
     const { scene } = useGLTF('./rocketship.glb', true, false);
-	const { wasm, loading, error } = useWasm('/wasm/rocketPhysics.wasm');
+	const { wasm } = useWasm('/wasm/rocketPhysics.wasm');
 	
 	/**
 	 *  Leva Debug Menu Options
@@ -39,6 +40,8 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			BURN_RATE: { value: 200, min: 50, max: 4000, step: 0.1},
 			THROTTLE: { value: 1.0, min: 0.25, max: 4, step: 0.01},
 			DRY_MASS: { value: 2000, min: 500, max: 5000, step: 1},
+			MOMENT_OF_INERTIA: { value: 50000, min: 10000, max: 200000, step: 1000 },
+			GIMBAL_TORQUE: { value: 5000, min: 0, max: 20000, step: 100 },
 		}
 	}, []);
 
@@ -56,7 +59,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		}
 	}, []);
 
-	const { DRAG_COEFFICIENT, EXHAUST_VELOCITY, BURN_RATE, THROTTLE, DRY_MASS } = useControls("Rocket Options", debug_rocket_options);
+	const { DRAG_COEFFICIENT, EXHAUST_VELOCITY, BURN_RATE, THROTTLE, DRY_MASS, MOMENT_OF_INERTIA, GIMBAL_TORQUE } = useControls("Rocket Options", debug_rocket_options);
 	const { SURFACE_GRAVITY } = useControls("Earth Options", debug_physics_options);
 	const { MAX_DELTA, MAX_VELOCITY, MAX_ACCELERATION } = useControls("Clamp Options", debug_clamp_options);
 	
@@ -172,7 +175,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				EXHAUST_VELOCITY
 			) ?? (massFlowRate * EXHAUST_VELOCITY);
 			
-			// SAFETY: Verify thrust is reasonable
+			// Verify thrust is reasonable
 			if (!isFinite(thrustForce) || thrustForce < 0) {
 				console.error('Invalid thrust:', thrustForce);
 				return;
@@ -180,8 +183,6 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// Net force
 			const netForce = thrustForce - dragForce - gravityForce;
-			
-			// Calculate new physics state
 			let acceleration = netForce / currentMass;
 			
 			// Apply ramp-up during first 2000 frames
@@ -208,13 +209,67 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			const newFuel = Math.max(0, missionState.fuel - fuelConsumed);
 			const newMass = DRY_MASS + newFuel;
 			
+			// Angular velocity 
+			const currentPitch = missionState.pitchAngle ?? 0;
+			const currentAngularVel = missionState.angularVelocity ?? 0;
+			
+			// Calculate target pitch based on mission time 
+			let targetPitch = 0;
+			if (missionState.missionTime > 10 && missionState.missionTime <= 60) {
+				// Gradual pitch from 0° to 45° over 50 seconds
+				targetPitch = (Math.PI / 4) * ((missionState.missionTime - 10) / 50);
+			} else if (missionState.missionTime > 60) {
+				// Continue pitching toward horizontal
+				const additionalTime = missionState.missionTime - 60;
+				targetPitch = (Math.PI / 4) + (Math.PI / 4) * Math.min(additionalTime / 90, 1);
+			}
+			
+			// Simple proportional control for torque
+			const pitchError = targetPitch - currentPitch;
+			const controlTorque = pitchError * GIMBAL_TORQUE;
+			
+			// Calculate angular acceleration: α = τ / I
+			const angularAcceleration = controlTorque / MOMENT_OF_INERTIA;
+			
+			// Update angular velocity: ω_new = ω + α * Δt
+			let newAngularVel = currentAngularVel + (angularAcceleration * rampedDelta);
+			
+			// Apply damping to prevent oscillation
+			newAngularVel *= 0.95;
+			
+			// Update pitch angle: θ_new = θ + ω * Δt
+			const newPitch = currentPitch + (newAngularVel * rampedDelta);
+			
+			// Apply rotation to Rapier body (pitch around Z-axis)
+			const quaternion = new THREE.Quaternion();
+			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), newPitch);
+			body.current.setRotation(quaternion, true);
+			
+			// Decompose thrust into components based on pitch
+			const thrustVertical = thrustForce * Math.cos(newPitch);
+			const thrustHorizontal = thrustForce * Math.sin(newPitch);
+			
+			// Recalculate net force with pitched thrust
+			const netForceVertical = thrustVertical - dragForce - gravityForce;
+			
+			// Recalculate acceleration with new net force
+			acceleration = netForceVertical / currentMass;
+			acceleration *= rampMultiplier;
+			acceleration = Math.max(-MAX_ACCELERATION, Math.min(MAX_ACCELERATION, acceleration));
+
+			newVelocity = velocity + (acceleration * rampedDelta);
+			newVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, newVelocity));
+			
 			// Update mission state
 			updateMission({
 				fuel: newFuel,
 				missionTime: missionState.missionTime,
 				mass: newMass,
 				altitude: altitude,
-				velocity: newVelocity
+				velocity: newVelocity,
+				pitchAngle: newPitch,
+				angularVelocity: newAngularVel,
+				targetPitch: targetPitch,
 			});
 		}
 	}, [ launched, missionState, updateMission, wasm ]);
@@ -230,7 +285,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			restitution={0.1} 
 			linearDamping={0} 
 			angularDamping={0.5} 
-			lockRotations={true} 
+			lockRotations={false}
 			type={launched ? "kinematicVelocity" : "kinematicPosition"}
 			ref={body}
 		>
