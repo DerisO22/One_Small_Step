@@ -75,4 +75,15 @@ export interface WasmModule {
         burn_rate: number,
         throttle: number,
     ) => number
+
+    /**
+     *   Angular Velocity
+     */
+    compute_first_half_target_pitch?: (
+        missionTime: number
+    ) => number;
+    
+    compute_second_half_target_pitch?: (
+        additionalTime: number,
+    ) => number;
 }

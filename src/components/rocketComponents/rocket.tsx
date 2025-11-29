@@ -216,10 +216,14 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			// Calculate target pitch based on mission time 
 			let targetPitch = 0;
 			if (missionState.missionTime > 10 && missionState.missionTime <= 60) {
-				targetPitch = (Math.PI / 4) * ((missionState.missionTime - 10) / 50);
+				targetPitch = wasm?.compute_first_half_target_pitch?.(
+					missionState.missionTime
+				) ?? 0;
 			} else if (missionState.missionTime > 60) {
 				const additionalTime = missionState.missionTime - 60;
-				targetPitch = (Math.PI / 4) + (Math.PI / 4) * Math.min(additionalTime / 90, 1);
+				targetPitch = wasm?.compute_second_half_target_pitch?.(
+					additionalTime
+				) ?? 0;
 			}
 			
 			// control for torque
@@ -231,7 +235,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// Update angular velocity: ω_new = ω + α * Δt
 			let newAngularVel = currentAngularVel + (angularAcceleration * rampedDelta);
-			newAngularVel *= 0.95;
+			newAngularVel *= 0.4;
 			
 			// θ_new = θ + ω * Δt
 			const newPitch = currentPitch + (newAngularVel * rampedDelta);
