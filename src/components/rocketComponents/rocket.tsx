@@ -84,14 +84,14 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		})
     }, [scene]);
 
+	// Reset the rockets position, velocity, and rotations
 	useEffect(() => {
 		if (!launched && body.current) {
 			body.current.setTranslation({ x: 0, y: 0, z: 0}, true);
 			body.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-			body.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
-			
-			visualPitchRef.current = 0;
 
+			body.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
+			visualPitchRef.current = 0;
 			const quaternion = new THREE.Quaternion();
 			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), 0);
 			body.current.setRotation(quaternion, true);
