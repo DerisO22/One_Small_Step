@@ -203,13 +203,6 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				newVelocity = 0;
 			}
 			
-			// Apply to Rapier
-			body.current.setLinvel({ 
-				x: 0,
-				y: newVelocity, 
-				z: 0 
-			}, true);
-			
 			// Update fuel and mass
 			const fuelConsumed = massFlowRate * rampedDelta;
 			const newFuel = Math.max(0, missionState.fuel - fuelConsumed);
@@ -249,6 +242,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// Decompose thrust into components based on pitch
 			const thrustVertical = thrustForce * Math.cos(physicsPitch);
+			const thrustHorizontal = -thrustForce * Math.sin(physicsPitch);
 			const netForceVertical = thrustVertical - dragForce - gravityForce;
 			
 			// Recalculate acceleration with new net force
@@ -258,6 +252,20 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 
 			newVelocity = velocity + (acceleration * rampedDelta);
 			newVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, newVelocity));
+
+			// Calculate horizontal acceleration and velocity
+			const horizontalAcceleration = (thrustHorizontal / currentMass) * rampMultiplier;
+			const currentHorizontalVel = currentVel.x;
+			const newHorizontalVelocity = currentHorizontalVel + (horizontalAcceleration * rampedDelta * 1.2);
+			
+			// Apply both vertical and horizontal velocities
+			body.current.setLinvel({ 
+				x: newHorizontalVelocity,
+				y: newVelocity, 
+				z: 0 
+			}, true);
+
+			console.log(body.current.translation().y)
 			
 			// Update mission state
 			updateMission({
@@ -282,7 +290,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			canSleep={false} 
 			mass={missionState.mass}
 			restitution={0.1} 
-			linearDamping={0} 
+			linearDamping={0}
 			angularDamping={0.5} 
 			lockRotations={false}
 			type={launched ? "kinematicVelocity" : "kinematicPosition"}
