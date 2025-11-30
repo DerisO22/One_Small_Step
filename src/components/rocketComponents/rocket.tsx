@@ -254,9 +254,9 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			newVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, newVelocity));
 
 			// Calculate horizontal acceleration and velocity
-			const horizontalAcceleration = (thrustHorizontal / currentMass) * rampMultiplier;
+			const horizontalAcceleration = (thrustHorizontal / currentMass) * rampMultiplier * 2;
 			const currentHorizontalVel = currentVel.x;
-			const newHorizontalVelocity = currentHorizontalVel + (horizontalAcceleration * rampedDelta * 1.2);
+			const newHorizontalVelocity = currentHorizontalVel + (horizontalAcceleration * rampedDelta);
 			
 			// Apply both vertical and horizontal velocities
 			body.current.setLinvel({ 
