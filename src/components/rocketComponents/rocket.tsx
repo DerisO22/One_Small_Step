@@ -40,8 +40,8 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			BURN_RATE: { value: 200, min: 50, max: 4000, step: 0.1},
 			THROTTLE: { value: 1.0, min: 0.25, max: 4, step: 0.01},
 			DRY_MASS: { value: 2000, min: 500, max: 5000, step: 1},
-			MOMENT_OF_INERTIA: { value: 50000, min: 10000, max: 200000, step: 1000 },
-			GIMBAL_TORQUE: { value: 5000, min: 0, max: 20000, step: 100 },
+			MOMENT_OF_INERTIA: { value: 30000, min: 10000, max: 200000, step: 1000 },
+			GIMBAL_TORQUE: { value: 12500, min: 0, max: 20000, step: 100 },
 		}
 	}, []);
 
@@ -72,6 +72,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 
 	const firstPhysicsFrame = useRef(true);
 	const physicsFrameCount = useRef(0);
+	const visualPitchRef = useRef(0);
 
 	// Add shadows to entire character model
 	useEffect(() => {
@@ -88,6 +89,12 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			body.current.setTranslation({ x: 0, y: 0, z: 0}, true);
 			body.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
 			body.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
+			
+			visualPitchRef.current = 0;
+
+			const quaternion = new THREE.Quaternion();
+			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), 0);
+			body.current.setRotation(quaternion, true);
 		}
 	})
 
@@ -215,11 +222,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// Calculate target pitch based on mission time 
 			let targetPitch = 0;
-			if (missionState.missionTime > 10 && missionState.missionTime <= 60) {
+			if (missionState.missionTime > 10 && missionState.missionTime <= 40) {
 				targetPitch = wasm?.compute_first_half_target_pitch?.(
 					missionState.missionTime
 				) ?? 0;
-			} else if (missionState.missionTime > 60) {
+			} else if (missionState.missionTime > 40) {
 				const additionalTime = missionState.missionTime - 60;
 				targetPitch = wasm?.compute_second_half_target_pitch?.(
 					additionalTime
@@ -228,25 +235,26 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// control for torque
 			const pitchError = targetPitch - currentPitch;
-			const controlTorque = pitchError * GIMBAL_TORQUE;
+			const controlTorque = pitchError * GIMBAL_TORQUE ;
 			
 			// Calculate angular acceleration: α = τ / I
-			const angularAcceleration = controlTorque / MOMENT_OF_INERTIA;
+			const angularAcceleration = controlTorque / MOMENT_OF_INERTIA / 1000;
 			
 			// Update angular velocity: ω_new = ω + α * Δt
 			let newAngularVel = currentAngularVel + (angularAcceleration * rampedDelta);
-			newAngularVel *= 0.4;
+			const dampedAngularVel = newAngularVel * 0.2;
 			
 			// θ_new = θ + ω * Δt
-			const newPitch = currentPitch + (newAngularVel * rampedDelta);
+			const physicsPitch = currentPitch + (newAngularVel * rampedDelta);
+			visualPitchRef.current += (dampedAngularVel * rampedDelta);
 			
 			// Apply rotation 
 			const quaternion = new THREE.Quaternion();
-			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), newPitch);
+			quaternion.setFromAxisAngle(new Vector3(1, 0, 0), visualPitchRef.current);
 			body.current.setRotation(quaternion, true);
 			
 			// Decompose thrust into components based on pitch
-			const thrustVertical = thrustForce * Math.cos(newPitch);
+			const thrustVertical = thrustForce * Math.cos(physicsPitch);
 			const netForceVertical = thrustVertical - dragForce - gravityForce;
 			
 			// Recalculate acceleration with new net force
@@ -264,8 +272,8 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				mass: newMass,
 				altitude: altitude,
 				velocity: newVelocity,
-				pitchAngle: newPitch,
-				angularVelocity: newAngularVel,
+				pitchAngle: physicsPitch,
+				angularVelocity: dampedAngularVel,
 				targetPitch: targetPitch,
 			});
 		}

@@ -17,7 +17,7 @@ function App() {
 						shadows
 					>
 						{/* Actual Level */}
-						<Physics debug={false}>
+						<Physics debug={true}>
 							<Scene />
 						</Physics>
 						
