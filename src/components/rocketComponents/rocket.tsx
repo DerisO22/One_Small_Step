@@ -242,16 +242,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// Update angular velocity: ω_new = ω + α * Δt
 			let newAngularVel = currentAngularVel + (angularAcceleration * rampedDelta);
-			const dampedAngularVel = newAngularVel * 0.2;
+			const dampedAngularVel = newAngularVel * 0.9;
 			
 			// θ_new = θ + ω * Δt
 			const physicsPitch = currentPitch + (newAngularVel * rampedDelta);
-			visualPitchRef.current += (dampedAngularVel * rampedDelta);
-			
-			// Apply rotation 
-			const quaternion = new THREE.Quaternion();
-			quaternion.setFromAxisAngle(new Vector3(1, 0, 0), visualPitchRef.current);
-			body.current.setRotation(quaternion, true);
+			visualPitchRef.current += (dampedAngularVel * rampedDelta * 200);
 			
 			// Decompose thrust into components based on pitch
 			const thrustVertical = thrustForce * Math.cos(physicsPitch);
@@ -294,7 +289,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			type={launched ? "kinematicVelocity" : "kinematicPosition"}
 			ref={body}
 		>
-			<group position={[-0.017, 607.435, -4.001]}>
+			<group position={[-0.017, 607.435, -4.001]} rotation={[0, 0, visualPitchRef.current]}>
 				<primitive
 					object={ scene }
 					scale={[.0008, .0008, .0008]}
