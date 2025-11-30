@@ -17,6 +17,7 @@ export const MissionProvider = ({children}: MissionProviderProps) => {
         fuel: 24000,
         mass: 26000,
         pitchAngle: 0,
+        visualPitch: 0,
         angularVelocity: 0,
         targetPitch: 0,
     });
@@ -38,6 +39,7 @@ export const MissionProvider = ({children}: MissionProviderProps) => {
             fuel: 24000,
             mass: 26000,
             pitchAngle: 0,
+            visualPitch: 0,
             angularVelocity: 0,
             targetPitch: 0,
         })

@@ -13,6 +13,7 @@ export interface MissionState {
     fuel: number,
     mass: number,
     pitchAngle: number,
+    visualPitch: number,
     angularVelocity: number,
     targetPitch: number,
 };

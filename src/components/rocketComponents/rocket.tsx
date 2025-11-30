@@ -72,7 +72,6 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 
 	const firstPhysicsFrame = useRef(true);
 	const physicsFrameCount = useRef(0);
-	const visualPitchRef = useRef(0);
 
 	// Add shadows to entire character model
 	useEffect(() => {
@@ -91,7 +90,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			body.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
 
 			body.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
-			visualPitchRef.current = 0;
+			missionState.visualPitch = 0;
 			const quaternion = new THREE.Quaternion();
 			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), 0);
 			body.current.setRotation(quaternion, true);
@@ -227,7 +226,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 					missionState.missionTime
 				) ?? 0;
 			} else if (missionState.missionTime > 40) {
-				const additionalTime = missionState.missionTime - 60;
+				const additionalTime = missionState.missionTime - 40;
 				targetPitch = wasm?.compute_second_half_target_pitch?.(
 					additionalTime
 				) ?? 0;
@@ -246,7 +245,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// θ_new = θ + ω * Δt
 			const physicsPitch = currentPitch + (newAngularVel * rampedDelta);
-			visualPitchRef.current += (dampedAngularVel * rampedDelta * 200);
+			missionState.visualPitch += (dampedAngularVel * rampedDelta * 200);
 			
 			// Decompose thrust into components based on pitch
 			const thrustVertical = thrustForce * Math.cos(physicsPitch);
@@ -289,7 +288,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			type={launched ? "kinematicVelocity" : "kinematicPosition"}
 			ref={body}
 		>
-			<group position={[-0.017, 607.435, -4.001]} rotation={[0, 0, visualPitchRef.current]}>
+			<group position={[-0.017, 607.435, -4.001]} rotation={[0, 0, missionState.visualPitch]}>
 				<primitive
 					object={ scene }
 					scale={[.0008, .0008, .0008]}
