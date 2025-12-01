@@ -11,7 +11,11 @@ export interface MissionState {
     altitude: number,
     velocity: number,
     fuel: number,
-    mass: number
+    mass: number,
+    pitchAngle: number,
+    visualPitch: number,
+    angularVelocity: number,
+    targetPitch: number,
 };
 
 export interface RocketProps {

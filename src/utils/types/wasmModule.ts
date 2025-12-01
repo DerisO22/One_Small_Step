@@ -1,11 +1,13 @@
+/**
+ * Interface for holding the WASM function prototypes
+ */
 export interface WasmModule {
-    add?: (a: number, b: number) => number;
-
     /**
      * 
-     *   Atmospheric Drag (and supporting wasm functions)
+     *   Force-Related Calculations
      * 
      */
+    // Atmospheric Drag (and supporting wasm functions)
     compute_atmospheric_drag?: (
         drag_coefficient: number, 
         air_density: number, 
@@ -13,38 +15,19 @@ export interface WasmModule {
         reference_area: number
     ) => number;
 
-    // Calculate reference_area
-    compute_reference_area?: (
-        volume_of_rocket: number,
-    ) => number;
-
-    /**
-     * 
-     *   Gravity Variation
-     * 
-     */
+    // Gravity Variation
     compute_gravity_variation?: (
         gravitational_constant: number,
         mass_of_earth: number,
         distance_from_center: number
     ) => number;
 
-    /**
-     * 
-     *   Thrust and Mass Flow
-     * 
-     */
     compute_thrust?: (
         mass_flow_rate: number,
         exhaust_velocity: number,
     ) => number
 
-    /**
-     * 
-     *   Net Force
-     *   NF = F_Thrust - F_drag - F_gravity
-     * 
-     */
+    // Net Force
     compute_net_force?: (
         thrust_force: number,
         drag_force: number,
@@ -53,8 +36,54 @@ export interface WasmModule {
 
     /**
      * 
-     *   More supporting equations that 
-     *   I initially didn't think about
+     *   Kinematics
      * 
      */
+    // Acceleration
+    compute_acceleration?: (
+        net_force: number,
+        mass: number,
+    ) => number
+
+    compute_new_velocity?: (
+        current_velocity: number,
+        current_acceleration: number,
+        delta_time: number
+    ) => number
+
+    compute_new_altitude?: (
+        current_altitude: number,
+        velocity: number,
+        delta_time: number,
+    ) => number
+
+    /**
+     * 
+     *   Other Supporting Calculations
+     * 
+     */
+    // Calculate reference_area
+    compute_reference_area?: (
+        rocket_radius: number,
+    ) => number;
+
+    compute_air_density?: (
+        altitude: number,
+    ) => number
+
+    compute_mass_flow_rate?: (
+        burn_rate: number,
+        throttle: number,
+    ) => number
+
+    /**
+     *   Angular Velocity
+     */
+    compute_first_half_target_pitch?: (
+        missionTime: number
+    ) => number;
+    
+    compute_second_half_target_pitch?: (
+        additionalTime: number,
+    ) => number;
 }

@@ -11,11 +11,15 @@ interface MissionProviderProps {
 export const MissionProvider = ({children}: MissionProviderProps) => {
     const [ state, setState ] = useState<MissionState>({
         launched: false,
-        missionTime: 0,
+        missionTime: -4,
         altitude: 0,
         velocity: 0,
-        fuel: 18000,
-        mass: 20000
+        fuel: 24000,
+        mass: 26000,
+        pitchAngle: 0,
+        visualPitch: 0,
+        angularVelocity: 0,
+        targetPitch: 0,
     });
 
     const launch = useCallback(() => {
@@ -29,11 +33,15 @@ export const MissionProvider = ({children}: MissionProviderProps) => {
     const reset = useCallback(() => {
         setState({
             launched: false,
-            missionTime: 0,
+            missionTime: -4,
             altitude: 0,
             velocity: 0,
-            fuel: 18000,
-            mass: 20000
+            fuel: 24000,
+            mass: 26000,
+            pitchAngle: 0,
+            visualPitch: 0,
+            angularVelocity: 0,
+            targetPitch: 0,
         })
     }, []);
 

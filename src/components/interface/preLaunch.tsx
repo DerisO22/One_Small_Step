@@ -1,16 +1,60 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMission } from "../../stores/MissionContext";
 import './styles/preLaunch.css';
 import '../../index.css';
+import { Leva } from "leva";
+import { startCountdown } from "../../utils/functions/startCountdown";
 
 const PreLaunchInterface = () => {
     const [ instructions_visible, setInstructions_visible ] = useState<boolean>(false);
-    // Gotta make this into a global context instead of just the hook
-    // so I can make sure all components can get that missionState
     const { state, launch } = useMission();
+    const rocketLaunchSound = useRef<HTMLAudioElement | null>(null);
+    const hasPlayedOnce = useRef<boolean>(false);
 
     useEffect(() => {
+        rocketLaunchSound.current = new Audio('/sfx/InitLaunch.wav');
+        rocketLaunchSound.current.volume = 0.4;
+        rocketLaunchSound.current.load();
 
+        const handleTimeUpdate = () => {
+            if (!rocketLaunchSound.current || !state.launched) return;
+
+            const audio = rocketLaunchSound.current;
+            const duration = audio.duration;
+            const currentTime = audio.currentTime;
+
+            if (hasPlayedOnce.current && currentTime >= duration - 2) {
+                audio.currentTime = Math.max(0, duration - 10);
+            } else if (!hasPlayedOnce.current && currentTime >= duration - 10) {
+                hasPlayedOnce.current = true;
+            }
+        }
+
+        rocketLaunchSound.current?.addEventListener('timeupdate', handleTimeUpdate);
+
+        return () => {
+            if (rocketLaunchSound.current) {
+                rocketLaunchSound.current.removeEventListener('timeupdate', handleTimeUpdate);
+                rocketLaunchSound.current.pause();
+                rocketLaunchSound.current = null;
+            }
+        };
+    }, [state.launched]);
+
+    useEffect(() => {
+        if (state.launched && rocketLaunchSound.current) {
+            // Reset audio to beginning before playing
+            rocketLaunchSound.current.currentTime = 0;
+            hasPlayedOnce.current = false;
+            rocketLaunchSound.current.play().catch((error) => {
+                console.error('Failed to play launch sound:', error);
+            });
+        } else if (!state.launched && rocketLaunchSound.current) {
+            // Stop and reset audio when mission is reset
+            rocketLaunchSound.current.pause();
+            rocketLaunchSound.current.currentTime = 0;
+            hasPlayedOnce.current = false;
+        }
     }, [state.launched]);
 
     const toggle_Instructions = () => {
@@ -36,9 +80,16 @@ const PreLaunchInterface = () => {
                     ) : (<></>)}
 
                     <div className="launch_button_container">
-                        <div onClick={launch} className="launch_button">Launch</div>    
+                        <div onClick={() => {
+                            launch();
+                            startCountdown();
+                        }} className="launch_button">Launch</div>    
                     </div>
-                    
+
+                    {/* Debug Menu */}
+					<div className='levaDebug_Menu'>
+						{state.launched ? <></> : <Leva fill collapsed/>}
+					</div>
                 </>
             ) : null}
         </>

@@ -37,11 +37,15 @@
     background-color: rgba(255, 255, 255, 0.9);
 }
 
+.instructions_button:active {
+    transform: scale(0.7);
+}
+
 .instructions {
-    width: 60%;
+    width: 35rem;
     height: fit-content;
     position: absolute;
-    top: 1rem;
+    top: 3rem;
     left: 50%;
     transform: translateX(-50%);
 
@@ -81,18 +85,55 @@
     letter-spacing: 0.1rem;
     color: rgb(255, 255, 255);
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 900;
     border-radius: 5px;
-    border: 1px solid rgba(110, 255, 202, 0.9);
-    background-color: rgba(110, 255, 202, 0.4);
-    box-shadow: 0 0 10px 3px rgba(110, 255, 202, 0.5);
+    border: 1px solid rgb(255, 255, 255);
+    background-color: rgba(242, 242, 242, 0.1);
+    box-shadow: 0 0 10px 3px #ffffff80;
     transition: all 0.3s ease-in-out;
 }
 
 .launch_button:hover {
     transform: scale(1.1);
+    
+    background-color: rgba(0, 0, 0, 0.8);
+    color: rgba(248, 50, 50, 0.959);
+    border: none;
+    box-shadow: 0 0 10px 3px rgba(248, 50, 50, 0.659);
 }
 
 .launch_button:active {
     transform: scale(0.9);
+}
+
+/* 
+*  Debug Menu
+*/
+.levaDebug_Menu {
+	position: absolute;
+	top: 0.3rem;
+	left: 0.3rem;
+	
+	width: fit-content;
+	height: fit-content;
+	z-index: 999;
+}
+
+
+@media screen and (max-width: 1200px) {
+    .instructions {
+        width: 30rem;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .instructions {
+        width: 55%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .instructions {
+        width: 70%;
+    }
 }
