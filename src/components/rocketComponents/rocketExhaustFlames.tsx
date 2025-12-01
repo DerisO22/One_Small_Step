@@ -80,10 +80,6 @@ const RocketExhaustFlames = () => {
             velocities[i3] += velocities[i3] * coneAngle * delta;
             velocities[i3 + 2] += velocities[i3 + 2] * coneAngle * delta;
 
-            // fade between colors
-            const distanceTraveled = Math.abs(positions[i3 + 1] + 0.03);
-            const fadeAmount = Math.min(distanceTraveled / 5, 1.0);
-
             colors[i3] = 1;
             colors[i3 + 1] = 0.2;
             colors[i3 + 2] = 0.1;
