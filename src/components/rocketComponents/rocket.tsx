@@ -227,7 +227,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			
 			// control for torque
 			const pitchError = targetPitch - currentPitch;
-			const controlTorque = pitchError * GIMBAL_TORQUE ;
+			const controlTorque = pitchError * GIMBAL_TORQUE;
 			
 			// Calculate angular acceleration: α = τ / I
 			const angularAcceleration = controlTorque / MOMENT_OF_INERTIA / 1000;
