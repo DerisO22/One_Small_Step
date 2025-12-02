@@ -15,7 +15,7 @@ function getEarthMat(sunDirection = defaultSunDirection) {
   );
   const cloudsMap = useLoader(
     THREE.TextureLoader,
-    "./textures/earth-clouds-4k.jpg"
+    "./textures/earth-clouds-4k.webp"
   );
 
   const uniforms = {

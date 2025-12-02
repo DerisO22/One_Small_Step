@@ -121,9 +121,10 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				physicsFrameCount.current = 0;
 				return;
 			}
+
+			physicsFrameCount.current++;
 			
 			// Smooth ramp-up over first 2000 frames (~3 seconds) to prevent spike
-			physicsFrameCount.current++;
 			const rampMultiplier = Math.min(physicsFrameCount.current / 2000, 1.0);
 			
 			// Also ramp up the delta time itself
