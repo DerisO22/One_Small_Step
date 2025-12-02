@@ -1,8 +1,16 @@
 import { RigidBody } from "@react-three/rapier";
 import { useGLTF } from "@react-three/drei";
+import { useEffect } from "react";
 
 const LaunchPad = () => {
     const { scene } = useGLTF('./models/launch_pad_compressed-v1.glb', true, false);
+
+    useEffect(() => {
+        scene.traverse((child) => {
+            child.matrixAutoUpdate = false;
+            child.updateMatrix();
+        }); 
+    }, [scene]);
 
     return (
         <>
