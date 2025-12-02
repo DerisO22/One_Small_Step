@@ -11,7 +11,7 @@ function getEarthMat(sunDirection = defaultSunDirection) {
 );
   const nightMap = useLoader(
     THREE.TextureLoader,
-    "./textures/earth-nightmap-4k.jpg"
+    "./textures/earth-nightmap-4k.webp"
   );
   const cloudsMap = useLoader(
     THREE.TextureLoader,
