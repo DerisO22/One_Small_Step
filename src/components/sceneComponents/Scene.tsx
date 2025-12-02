@@ -4,7 +4,7 @@ import { useWasm } from '../../hooks/useWasm.ts';
 import Rocket from '../rocketComponents/rocket.tsx';
 import Earth from './Earth.tsx';
 import LaunchPad from '../rocketComponents/launchPad.tsx';
-import Moon from './Moon.tsx';
+// import Moon from './Moon.tsx';
 import { useMission } from '../../stores/MissionContext.tsx';
 
 function WasmBox() {
@@ -37,7 +37,7 @@ function WasmBox() {
 
             {/* Space System */}
             <Earth />
-            <Moon />
+            {/* <Moon /> */}
         </>
     )
 }
