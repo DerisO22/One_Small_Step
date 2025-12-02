@@ -29,7 +29,7 @@ function WasmBox() {
         <>
             {/* Lights */}
             <ambientLight intensity={0.5} />
-            <directionalLight position={[100, 100, 5]} intensity={5} />
+            <directionalLight position={[100, 100, 5]} intensity={5} shadow-mapSize-height={512} shadow-mapSize-width={512} />
 
             {/* Launch Components */}
             <Rocket launched={state.launched} missionState={state} updateMission={updateMissionData}/>
