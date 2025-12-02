@@ -77,7 +77,7 @@ export interface WasmModule {
     ) => number
 
     /**
-     *   Angular Velocity
+     *   Guidance and Control
      */
     compute_first_half_target_pitch?: (
         missionTime: number
