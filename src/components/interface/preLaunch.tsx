@@ -12,7 +12,7 @@ const PreLaunchInterface = () => {
     const hasPlayedOnce = useRef<boolean>(false);
 
     useEffect(() => {
-        rocketLaunchSound.current = new Audio('/sfx/InitLaunch.wav');
+        rocketLaunchSound.current = new Audio('/sfx/initLaunch.mp3');
         rocketLaunchSound.current.volume = 0.4;
         rocketLaunchSound.current.load();
 
