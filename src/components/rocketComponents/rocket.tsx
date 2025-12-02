@@ -27,7 +27,7 @@ const EARTH_RADIUS = 637.1;
 
 const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
-    const { scene } = useGLTF('./rocketship.glb', true, false);
+    const { scene } = useGLTF('./models/rocketship_compressed-v1.glb', true, false);
 	const { wasm } = useWasm('/wasm/rocketPhysics.wasm');
 	
 	/**
@@ -254,7 +254,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			newVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, newVelocity));
 
 			// Calculate horizontal acceleration and velocity
-			const horizontalAcceleration = (thrustHorizontal / currentMass) * rampMultiplier * 2;
+			const horizontalAcceleration = (thrustHorizontal / currentMass) * rampMultiplier;
 			const currentHorizontalVel = currentVel.x;
 			const newHorizontalVelocity = currentHorizontalVel + (horizontalAcceleration * rampedDelta);
 			
@@ -264,8 +264,6 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				y: newVelocity, 
 				z: 0 
 			}, true);
-
-			console.log(body.current.translation().y)
 			
 			// Update mission state
 			updateMission({

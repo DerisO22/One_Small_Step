@@ -24,8 +24,8 @@ const PreLaunchInterface = () => {
             const currentTime = audio.currentTime;
 
             if (hasPlayedOnce.current && currentTime >= duration - 2) {
-                audio.currentTime = Math.max(0, duration - 10);
-            } else if (!hasPlayedOnce.current && currentTime >= duration - 10) {
+                audio.currentTime = Math.max(0, duration - 5);
+            } else if (!hasPlayedOnce.current && currentTime >= duration - 5) {
                 hasPlayedOnce.current = true;
             }
         }

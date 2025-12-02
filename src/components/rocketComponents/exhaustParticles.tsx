@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-const totalParticles = 300;
+const totalParticles = 10;
 
 const ExhaustParticles = useMemo(() => {
     const positions = new Float32Array(totalParticles * 3);

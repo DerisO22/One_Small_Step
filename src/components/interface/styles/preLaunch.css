@@ -26,7 +26,7 @@
     border: 1px solid black;
     background-size: 70%;
     background-color: rgba(255, 255, 255, 0.6);
-    background-image: url("/info.png");
+    background-image: url("/icons/info.png");
     background-position: center;
     background-repeat: no-repeat;
     transition: all 0.3s ease-in-out;

@@ -4,7 +4,7 @@ import { useWasm } from '../../hooks/useWasm.ts';
 import Rocket from '../rocketComponents/rocket.tsx';
 import Earth from './Earth.tsx';
 import LaunchPad from '../rocketComponents/launchPad.tsx';
-import Moon from './Moon.tsx';
+// import Moon from './Moon.tsx';
 import { useMission } from '../../stores/MissionContext.tsx';
 
 function WasmBox() {
@@ -29,7 +29,7 @@ function WasmBox() {
         <>
             {/* Lights */}
             <ambientLight intensity={0.5} />
-            <directionalLight position={[100, 100, 5]} intensity={5} />
+            <directionalLight position={[100, 100, 5]} intensity={5} shadow-mapSize-height={512} shadow-mapSize-width={512} />
 
             {/* Launch Components */}
             <Rocket launched={state.launched} missionState={state} updateMission={updateMissionData}/>
@@ -37,7 +37,7 @@ function WasmBox() {
 
             {/* Space System */}
             <Earth />
-            <Moon />
+            {/* <Moon /> */}
         </>
     )
 }
