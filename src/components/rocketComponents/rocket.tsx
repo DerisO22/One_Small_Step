@@ -27,7 +27,7 @@ const EARTH_RADIUS = 637.1;
 
 const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
-    const { scene } = useGLTF('./rocketship.glb', true, false);
+    const { scene } = useGLTF('./rocketship_compressed.glb', true, false);
 	const { wasm } = useWasm('/wasm/rocketPhysics.wasm');
 	
 	/**
