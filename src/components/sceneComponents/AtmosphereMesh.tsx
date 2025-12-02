@@ -53,7 +53,7 @@ function getFresnelShaderArgs({rimHex = 0x0088ff, facingHex = 0x000000} = {}) {
 function AtmosphereMesh({rimHex = 0x0088ff, facingHex = 0x000000, radius = 36}: { rimHex?: number; facingHex?: number; radius: number}) {
     const args = getFresnelShaderArgs({rimHex, facingHex});
     return (
-        <mesh position={[-0, -30, -4]}>
+        <mesh position={[-0, -29.67, -4]}>
             <icosahedronGeometry args={[radius, 32]} />
             <shaderMaterial {...args} />
         </mesh>
