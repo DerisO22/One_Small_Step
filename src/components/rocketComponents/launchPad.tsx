@@ -2,7 +2,7 @@ import { RigidBody } from "@react-three/rapier";
 import { useGLTF } from "@react-three/drei";
 
 const LaunchPad = () => {
-    const { scene } = useGLTF('./models/launch_pad_compressed.glb', true, false);
+    const { scene } = useGLTF('./models/launch_pad_compressed-v1.glb', true, false);
 
     return (
         <>
