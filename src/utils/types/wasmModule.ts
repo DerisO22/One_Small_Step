@@ -1,120 +1,41 @@
 /**
- * Interface for holding the WASM function prototypes
+ *  Interface for holding the WASM function prototypes
  */
 export interface WasmModule {
     /**
-     * 
-     *   Force-Related Calculations
-     * 
+     *  physics step function
+     *  Takes all current state and constants, returns pointer to results array
      */
-    // Atmospheric Drag (and supporting wasm functions)
-    compute_atmospheric_drag?: (
-        drag_coefficient: number, 
-        air_density: number, 
-        velocity: number,
-        reference_area: number
-    ) => number;
-
-    // Gravity Variation
-    compute_gravity_variation?: (
-        gravitational_constant: number,
-        mass_of_earth: number,
-        distance_from_center: number
-    ) => number;
-
-    compute_thrust?: (
-        mass_flow_rate: number,
-        exhaust_velocity: number,
-    ) => number
-
-    // Net Force
-    compute_net_force?: (
-        thrust_force: number,
-        drag_force: number,
-        force_of_gravity: number
-    ) => number
-
-    /**
-     * 
-     *   Kinematics
-     * 
-     */
-    // Acceleration
-    compute_acceleration?: (
-        net_force: number,
-        mass: number,
-    ) => number;
-
-    compute_new_velocity?: (
-        current_velocity: number,
-        current_acceleration: number,
-        delta_time: number
-    ) => number;
-
-    compute_horizontal_acceleration?: (
-        thrust_horizontal: number,
+    physics_step?: (
+        // Current state
+        current_pos_y: number,
+        current_vel_x: number,
+        current_vel_y: number,
         current_mass: number,
+        current_pitch: number,
+        current_angular_vel: number,
+        current_fuel: number,
+        mission_time: number,
+        delta: number,
         ramp_multiplier: number,
-    ) => number;
 
-    compute_new_horizontal_velocity?: (
-        current_horizontal_velocity: number,
-        horizontal_acceleration: number,
-        ramped_delta: number
-    ) => number;
-
-    compute_new_altitude?: (
-        current_altitude: number,
-        velocity: number,
-        delta_time: number,
-    ) => number;
-
-    /**
-     * 
-     *   Other Supporting Calculations
-     * 
-     */
-    // Calculate reference_area
-    compute_reference_area?: (
-        rocket_radius: number,
-    ) => number;
-
-    compute_air_density?: (
-        altitude: number,
-    ) => number
-
-    compute_mass_flow_rate?: (
+        // Constants
+        drag_coefficient: number,
+        exhaust_velocity: number,
         burn_rate: number,
         throttle: number,
-    ) => number
+        dry_mass: number,
+        moment_of_inertia: number,
+        gimbal_torque: number,
+        surface_gravity: number,
+        earth_radius: number,
+        rocket_radius: number,
+        max_acceleration: number,
+        max_velocity: number
+    ) => number; 
 
     /**
-     *   Guidance and Control (Rotational Physics)
+     * Exported memory to read results from
      */
-    compute_first_half_target_pitch?: (
-        missionTime: number
-    ) => number;
-    
-    compute_second_half_target_pitch?: (
-        additionalTime: number,
-    ) => number;
-
-    compute_angular_acceleration?: (
-        torque: number,
-        moment_of_interia: number,
-    ) => number;
-
-    compute_new_angular_velocity?: (
-        current_angular_vel: number,
-        angular_acceleration: number,
-        ramped_delta: number,
-    ) => number;
-
-    compute_physics_pitch?: (
-        current_pitch: number,
-        new_angular_vel: number,
-        ramped_delta: number
-    ) => number;    
-
-
+    memory?: WebAssembly.Memory;
 }
