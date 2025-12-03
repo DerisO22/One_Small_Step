@@ -248,7 +248,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			// Decompose thrust into components based on pitch
 			const thrustVertical = thrustForce * Math.cos(physicsPitch);
 			const thrustHorizontal = -thrustForce * Math.sin(physicsPitch);
-			const netForceVertical = thrustVertical - dragForce - gravityForce;
+			const netForceVertical = wasm.compute_net_force?.(
+				thrustVertical,
+				dragForce,
+				gravityForce
+			) ?? 0.1;
 			
 			// Recalculate acceleration with new net force
 			acceleration = netForceVertical / currentMass;
