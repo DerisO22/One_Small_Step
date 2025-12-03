@@ -235,14 +235,25 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			const controlTorque = pitchError * GIMBAL_TORQUE;
 			
 			// angular acceleration: α = τ / I
-			const angularAcceleration = controlTorque / MOMENT_OF_INERTIA / 1000;
+			const angularAcceleration = wasm.compute_angular_acceleration?.(
+				controlTorque,
+				MOMENT_OF_INERTIA
+			) ?? 0;
 			
 			// Update angular velocity: ω_new = ω + α * Δt
-			let newAngularVel = currentAngularVel + (angularAcceleration * rampedDelta);
+			let newAngularVel = wasm.compute_new_angular_velocity?.(
+				currentAngularVel,
+				angularAcceleration,
+				rampedDelta
+			) ?? 0;
 			const dampedAngularVel = newAngularVel * 0.9;
 			
 			// θ_new = θ + ω * Δt
-			const physicsPitch = currentPitch + (newAngularVel * rampedDelta);
+			const physicsPitch = wasm.compute_physics_pitch?.(
+				currentPitch,
+				newAngularVel,
+				rampedDelta
+			) ?? 0;
 			missionState.visualPitch += (dampedAngularVel * rampedDelta * 200);
 			
 			// Decompose thrust into components based on pitch

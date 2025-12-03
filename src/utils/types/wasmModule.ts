@@ -43,19 +43,31 @@ export interface WasmModule {
     compute_acceleration?: (
         net_force: number,
         mass: number,
-    ) => number
+    ) => number;
 
     compute_new_velocity?: (
         current_velocity: number,
         current_acceleration: number,
         delta_time: number
-    ) => number
+    ) => number;
+
+    compute_horizontal_acceleration?: (
+        thrust_horizontal: number,
+        current_mass: number,
+        ramp_multiplier: number,
+    ) => number;
+
+    compute_new_horizontal_velocity?: (
+        current_horizontal_velocity: number,
+        horizontal_acceleration: number,
+        ramped_delta: number
+    ) => number;
 
     compute_new_altitude?: (
         current_altitude: number,
         velocity: number,
         delta_time: number,
-    ) => number
+    ) => number;
 
     /**
      * 
@@ -104,5 +116,5 @@ export interface WasmModule {
         ramped_delta: number
     ) => number;    
 
-    
+
 }

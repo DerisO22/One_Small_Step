@@ -132,6 +132,42 @@
         (f32.add)
     )
 
+    (func $compute_horizontal_acceleration (export "compute_horizontal_acceleration")
+        ;; Params
+        (param $thrust_horizontal f32)
+        (param $current_mass f32)
+        (param $ramp_multiplier f32)
+
+        ;; Return Type
+        (result f32)
+
+        ;; Calculations
+        (local.get $thrust_horizontal)
+        (local.get $current_mass)
+        (f32.div)
+
+        (local.get $ramp_multiplier)
+        (f32.mul)
+    )
+
+    (func $compute_new_horizontal_velocity (export "compute_new_horiztonal_velocity")
+        ;; Params
+        (param $current_horizontal_velocity f32)
+        (param $horizontal_acceleration f32)
+        (param $ramped_delta f32)
+
+        ;; Return Type
+        (result f32)
+
+        ;; Calculations
+        (local.get $horizontal_acceleration)
+        (local.get $ramped_delta)
+        (f32.mul)
+
+        (local.get $ramped_delta)
+        (f32.add)
+    )
+
     (func $compute_new_altitude (export "compute_new_altitude")
         ;; Params
         (param $current_altitude f32)
