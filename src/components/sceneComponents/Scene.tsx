@@ -7,7 +7,7 @@ import LaunchPad from '../rocketComponents/launchPad.tsx';
 // import Moon from './Moon.tsx';
 import { useMission } from '../../stores/MissionContext.tsx';
 
-function WasmBox() {
+function Scene() {
     const { loading, error } = useWasm('/wasm/rocketPhysics.wasm');
     const { state, launch, updateMissionData } = useMission();
 
@@ -42,4 +42,4 @@ function WasmBox() {
     )
 }
 
-export default WasmBox;
+export default Scene;

@@ -109,8 +109,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
             camera.lookAt(cameraLookAt.current);
         }
 
-		// WASM Physics
-		if(launched && body.current && missionState.fuel > 0 && wasm) {
+		if(launched && body.current && missionState.fuel > 0 && wasm && wasm.physics_step && wasm.memory) {
 			// Clamp delta time to prevent absurd values
 			const safeDelta = Math.min(delta, MAX_DELTA);
 			missionState.missionTime += safeDelta;
@@ -121,18 +120,18 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				physicsFrameCount.current = 0;
 				return;
 			}
+
+			physicsFrameCount.current++;
 			
 			// Smooth ramp-up over first 2000 frames (~3 seconds) to prevent spike
-			physicsFrameCount.current++;
 			const rampMultiplier = Math.min(physicsFrameCount.current / 2000, 1.0);
-			
-			// Also ramp up the delta time itself
-			const rampedDelta = safeDelta * rampMultiplier;
 			
 			// Get current state from Rapier
 			const currentPos = body.current.translation();
 			const currentVel = body.current.linvel();
 			const currentMass = missionState.mass;
+			const currentPitch = missionState.pitchAngle ?? 0;
+			const currentAngularVel = missionState.angularVelocity ?? 0;
 			
 			// Check for NaN or invalid values
 			if (!isFinite(currentPos.y) || !isFinite(currentVel.y) || !isFinite(currentMass)) {
@@ -140,130 +139,56 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				return;
 			}
 			
-			// Current altitude above Earth's surface
-			const altitude = Math.max(0, currentPos.y); 
-			const distanceFromCenter = EARTH_RADIUS + altitude;
-			
-			// Current velocity
-			const velocity = currentVel.y;
-			const speed = Math.abs(velocity); 
-			
-			// Air density
-			const airDensity = wasm.compute_air_density?.(altitude) ?? 1.225;
-			
-			// Reference area
-			const refArea = wasm.compute_reference_area?.(ROCKET_RADIUS) ?? (Math.PI * ROCKET_RADIUS * ROCKET_RADIUS);
-			
-			// Drag force 
-			let dragForce = wasm.compute_atmospheric_drag?.(
+			// Call consolidated WASM physics function
+			const resultPtr = wasm.physics_step(
+				// Current state
+				currentPos.y,
+				currentVel.x,
+				currentVel.y,
+				currentMass,
+				currentPitch,
+				currentAngularVel,
+				missionState.fuel,
+				missionState.missionTime,
+				safeDelta,
+				rampMultiplier,
+				
+				// Constants
 				DRAG_COEFFICIENT,
-				airDensity,
-				speed,
-				refArea
-			) ?? 0;
-			
-			// Clamp drag to reasonable value
-			dragForce = Math.min(dragForce, 1000000); 
-			
-			// Gravity acceleration with altitude variation
-			const gravityAccel = SURFACE_GRAVITY * Math.pow(EARTH_RADIUS / distanceFromCenter, 2);
-			const gravityForce = currentMass * gravityAccel;
-			
-			// Mass flow rate
-			const massFlowRate = wasm.compute_mass_flow_rate?.(
+				EXHAUST_VELOCITY,
 				BURN_RATE,
-				THROTTLE
-			) ?? BURN_RATE * THROTTLE;
+				THROTTLE,
+				DRY_MASS,
+				MOMENT_OF_INERTIA,
+				GIMBAL_TORQUE,
+				SURFACE_GRAVITY,
+				EARTH_RADIUS,
+				ROCKET_RADIUS,
+				MAX_ACCELERATION,
+				MAX_VELOCITY
+			);
 			
-			// Thrust force
-			const thrustForce = wasm.compute_thrust?.(
-				massFlowRate,
-				EXHAUST_VELOCITY
-			) ?? (massFlowRate * EXHAUST_VELOCITY);
+			// Read results from WASM memory
+			const memoryBuffer = new Float32Array(wasm.memory.buffer, resultPtr, 9);
+			const newHorizontalVelocity = memoryBuffer[0];
+			const newVelocity = memoryBuffer[1];
+			const newFuel = memoryBuffer[2];
+			const newMass = memoryBuffer[3];
+			const altitude = memoryBuffer[4];
+			const physicsPitch = memoryBuffer[5];
+			const dampedAngularVel = memoryBuffer[6];
+			const targetPitch = memoryBuffer[7];
+			const visualPitchDelta = memoryBuffer[8];
 			
-			// Verify thrust is reasonable
-			if (!isFinite(thrustForce) || thrustForce < 0) {
-				console.error('Invalid thrust:', thrustForce);
-				return;
-			}
-			
-			// Net force
-			const netForce = thrustForce - dragForce - gravityForce;
-			let acceleration = netForce / currentMass;
-			
-			// Apply ramp-up during first 2000 frames
-			acceleration *= rampMultiplier;
-			acceleration = Math.max(-MAX_ACCELERATION, Math.min(MAX_ACCELERATION, acceleration));
-
-			let newVelocity = velocity + (acceleration * rampedDelta);
-			newVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, newVelocity));
-			
-			// Ground collision check
-			if (altitude <= 0 && newVelocity < 0) {
-				newVelocity = 0;
-			}
-			
-			// Update fuel and mass
-			const fuelConsumed = massFlowRate * rampedDelta;
-			const newFuel = Math.max(0, missionState.fuel - fuelConsumed);
-			const newMass = DRY_MASS + newFuel;
-			
-			// Angular velocity 
-			const currentPitch = missionState.pitchAngle ?? 0;
-			const currentAngularVel = missionState.angularVelocity ?? 0;
-			
-			// Calculate target pitch based on mission time 
-			let targetPitch = 0;
-			if (missionState.missionTime > 10 && missionState.missionTime <= 40) {
-				targetPitch = wasm?.compute_first_half_target_pitch?.(
-					missionState.missionTime
-				) ?? 0;
-			} else if (missionState.missionTime > 40) {
-				const additionalTime = missionState.missionTime - 40;
-				targetPitch = wasm?.compute_second_half_target_pitch?.(
-					additionalTime
-				) ?? 0;
-			}
-			
-			// control for torque
-			const pitchError = targetPitch - currentPitch;
-			const controlTorque = pitchError * GIMBAL_TORQUE;
-			
-			// Calculate angular acceleration: α = τ / I
-			const angularAcceleration = controlTorque / MOMENT_OF_INERTIA / 1000;
-			
-			// Update angular velocity: ω_new = ω + α * Δt
-			let newAngularVel = currentAngularVel + (angularAcceleration * rampedDelta);
-			const dampedAngularVel = newAngularVel * 0.9;
-			
-			// θ_new = θ + ω * Δt
-			const physicsPitch = currentPitch + (newAngularVel * rampedDelta);
-			missionState.visualPitch += (dampedAngularVel * rampedDelta * 200);
-			
-			// Decompose thrust into components based on pitch
-			const thrustVertical = thrustForce * Math.cos(physicsPitch);
-			const thrustHorizontal = -thrustForce * Math.sin(physicsPitch);
-			const netForceVertical = thrustVertical - dragForce - gravityForce;
-			
-			// Recalculate acceleration with new net force
-			acceleration = netForceVertical / currentMass;
-			acceleration *= rampMultiplier;
-			acceleration = Math.max(-MAX_ACCELERATION, Math.min(MAX_ACCELERATION, acceleration));
-
-			newVelocity = velocity + (acceleration * rampedDelta);
-			newVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, newVelocity));
-
-			// Calculate horizontal acceleration and velocity
-			const horizontalAcceleration = (thrustHorizontal / currentMass) * rampMultiplier;
-			const currentHorizontalVel = currentVel.x;
-			const newHorizontalVelocity = currentHorizontalVel + (horizontalAcceleration * rampedDelta);
-			
-			// Apply both vertical and horizontal velocities
+			// Apply velocities to rigid body
 			body.current.setLinvel({ 
 				x: newHorizontalVelocity,
 				y: newVelocity, 
 				z: 0 
 			}, true);
+			
+			// Update visual pitch
+			missionState.visualPitch += visualPitchDelta;
 			
 			// Update mission state
 			updateMission({
