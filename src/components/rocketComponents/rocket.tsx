@@ -189,7 +189,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			}
 			
 			// Net force
-			const netForce = thrustForce - dragForce - gravityForce;
+			const netForce = wasm.compute_net_force?.(
+				thrustForce,
+				dragForce,
+				gravityForce
+			) ?? 0.01;
 			let acceleration = netForce / currentMass;
 			
 			// Apply ramp-up during first 2000 frames
@@ -230,7 +234,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			const pitchError = targetPitch - currentPitch;
 			const controlTorque = pitchError * GIMBAL_TORQUE;
 			
-			// Calculate angular acceleration: α = τ / I
+			// angular acceleration: α = τ / I
 			const angularAcceleration = controlTorque / MOMENT_OF_INERTIA / 1000;
 			
 			// Update angular velocity: ω_new = ω + α * Δt

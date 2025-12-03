@@ -77,7 +77,7 @@ export interface WasmModule {
     ) => number
 
     /**
-     *   Guidance and Control
+     *   Guidance and Control (Rotational Physics)
      */
     compute_first_half_target_pitch?: (
         missionTime: number
@@ -86,4 +86,23 @@ export interface WasmModule {
     compute_second_half_target_pitch?: (
         additionalTime: number,
     ) => number;
+
+    compute_angular_acceleration?: (
+        torque: number,
+        moment_of_interia: number,
+    ) => number;
+
+    compute_new_angular_velocity?: (
+        current_angular_vel: number,
+        angular_acceleration: number,
+        ramped_delta: number,
+    ) => number;
+
+    compute_physics_pitch?: (
+        current_pitch: number,
+        new_angular_vel: number,
+        ramped_delta: number
+    ) => number;    
+
+    
 }

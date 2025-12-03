@@ -231,6 +231,7 @@
     ;;  Rotational Physics
     ;;
     ;;
+    ;; First and Second Half pitch to guide the rocket from upright to horizontal
     (func $compute_first_half_target_pitch (export "compute_first_half_target_pitch")
         ;; Pararms
         (param $missionTime f32)
@@ -282,5 +283,58 @@
         (f32.min)
 
         (f32.mul)
+    )
+
+    (func $compute_angular_acceleration (export "compute_angular_acceleration")
+        ;; Params
+        (param $torque f32)
+        (param $moment_of_inertia f32)
+
+        ;; Return Type
+        (result f32)
+
+        ;; Calculations
+        (local.get $torque)
+        (local.get $moment_of_inertia)
+        (f32.div)
+
+        (f32.const 1000)
+        (f32.div)
+    )
+
+    (func $compute_new_angular_velocity (export "compute_new_angular_velocity")
+        ;; Params
+        (param $current_angular_vel f32)
+        (param $angular_acceleration f32)
+        (param $ramped_delta f32)
+
+        ;; Return Type
+        (result f32)
+
+        ;; Calculations
+        (local.get $angular_acceleration)
+        (local.get $ramped_delta)
+        (f32.mul)
+
+        (local.get $current_angular_vel)
+        (f32.add)
+    )
+
+    (func $compute_physics_pitch (export "compute_physics_pitch")
+        ;; Params
+        (param $current_pitch f32)
+        (param $new_angular_vel f32)
+        (param $ramped_delta f32)
+
+        ;; Return Type
+        (result f32)
+
+        ;; Calculations
+        (local.get $new_angular_vel)
+        (local.get $ramped_delta)
+        (f32.mul)
+
+        (local.get $current_pitch)
+        (f32.add)
     )
 )
