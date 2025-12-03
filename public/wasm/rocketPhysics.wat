@@ -164,7 +164,7 @@
         (local.get $ramped_delta)
         (f32.mul)
 
-        (local.get $ramped_delta)
+        (local.get $current_horizontal_velocity)
         (f32.add)
     )
 
