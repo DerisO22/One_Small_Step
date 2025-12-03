@@ -12,7 +12,7 @@ const PreLaunchInterface = () => {
     const hasPlayedOnce = useRef<boolean>(false);
 
     useEffect(() => {
-        rocketLaunchSound.current = new Audio('/sfx/initLaunch.mp3');
+        rocketLaunchSound.current = new Audio('/sfx/InitLaunch.ogg');
         rocketLaunchSound.current.volume = 0.4;
         rocketLaunchSound.current.load();
 
@@ -25,6 +25,7 @@ const PreLaunchInterface = () => {
 
             if (hasPlayedOnce.current && currentTime >= duration - 2) {
                 audio.currentTime = Math.max(0, duration - 5);
+                audio.play();
             } else if (!hasPlayedOnce.current && currentTime >= duration - 5) {
                 hasPlayedOnce.current = true;
             }
@@ -73,7 +74,7 @@ const PreLaunchInterface = () => {
                         <div className="instructions">
                             <p className="header1">Welcome to the Rocket Launch Simulation</p>
                             <p className="text">Your goal is getting this rocket into Low-Earth Orbit !</p>
-                            <p className="text">You can adjust the rocket's properties by clicking on the rocket icon in the top left</p>
+                            <p className="text">You can adjust the rocket's properties by clicking on the dropdown icon in the top left</p>
                             <p className="text">After you're all set, click the launch button or press the spacebar</p>
                             <p className="header2">Goodluck, We're counting on You !</p>
                         </div>
