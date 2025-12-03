@@ -150,7 +150,7 @@
         (f32.mul)
     )
 
-    (func $compute_new_horizontal_velocity (export "compute_new_horiztonal_velocity")
+    (func $compute_new_horizontal_velocity (export "compute_new_horizontal_velocity")
         ;; Params
         (param $current_horizontal_velocity f32)
         (param $horizontal_acceleration f32)
