@@ -274,9 +274,17 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			newVelocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, newVelocity));
 
 			// Calculate horizontal acceleration and velocity
-			const horizontalAcceleration = (thrustHorizontal / currentMass) * rampMultiplier;
+			const horizontalAcceleration = wasm.compute_horizontal_acceleration?.(
+				thrustHorizontal,
+				currentMass, 
+				rampMultiplier
+			) ?? 0;
 			const currentHorizontalVel = currentVel.x;
-			const newHorizontalVelocity = currentHorizontalVel + (horizontalAcceleration * rampedDelta);
+			const newHorizontalVelocity = wasm.compute_new_horizontal_velocity?.(
+				currentHorizontalVel,
+				horizontalAcceleration,
+				rampedDelta
+			) ?? 0;
 			
 			// Apply both vertical and horizontal velocities
 			body.current.setLinvel({ 
