@@ -67,9 +67,9 @@ const LaunchInterface = () => {
                             </div>
 
                             <div className="outcome_stats_container">                            
-                                <span className="mission_outcome_stat">{state.missionTime} seconds</span>
-                                <span className="mission_outcome_stat">{state.velocity} km/s</span>
-                                <span className="mission_outcome_stat">{state.altitude} km</span>
+                                <span className="mission_outcome_stat">{String(state.missionTime).slice(0, 3)} seconds</span>
+                                <span className="mission_outcome_stat">{String(state.velocity).slice(0, 3)} km/s</span>
+                                <span className="mission_outcome_stat">{String(state.altitude).slice(0, 3)} km</span>
                             </div>
                         </div>
 
