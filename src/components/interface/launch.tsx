@@ -4,6 +4,14 @@ import '../../index.css';
 
 const LaunchInterface = () => {
     const { state, reset } = useMission();
+    
+    const checkMissionOutcome: () => boolean = () => {
+        if (state.altitude > 200 && state.velocity >= 7.8) {
+            return true;
+        }
+
+        return false;
+    };
 
     return (
         <>
@@ -34,7 +42,7 @@ const LaunchInterface = () => {
                             Fuel Left
                         </span>
 
-                        <div className="fuel_container" style={{width: (state.fuel / 154)}}></div>
+                        <div className="fuel_container" style={{width: (state.fuel / 245)}}></div>
                     </div>
 
                     <div className="low_fuel_warning_container">
@@ -46,7 +54,27 @@ const LaunchInterface = () => {
                 state.altitude > 0 ? (
                     // End Screen Interface
                     <div className="end_container">
-                        <span className="end_message header1">End of Mission</span>
+                        <span className="end_message">Mission Outcome</span>
+
+                        
+                        
+                        {/* Velocity and Altitude for checking if fail/success */}
+                        <div className="mission_outcome_container">
+                            <div className="outcome_stats_label_container">
+                                <span className="mission_outcome_label">Time Elapsed</span>
+                                <span className="mission_outcome_label">Rocket Velocity</span> 
+                                <span className="mission_outcome_label">Altitude</span> 
+                            </div>
+
+                            <div className="outcome_stats_container">                            
+                                <span className="mission_outcome_stat">{String(state.missionTime).slice(0, 3)} seconds</span>
+                                <span className="mission_outcome_stat">{String(state.velocity).slice(0, 3)} km/s</span>
+                                <span className="mission_outcome_stat">{String(state.altitude).slice(0, 3)} km</span>
+                            </div>
+                        </div>
+
+                        {checkMissionOutcome() ? <span className="success_text">Success</span> :  <span className="failed_text">Failed</span>}
+
                         <div onClick={reset} className="restart_button header1">
                             Restart
                         </div>

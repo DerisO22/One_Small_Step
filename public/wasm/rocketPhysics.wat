@@ -1,4 +1,3 @@
-
 (module
     (import "Math" "exp" (func $exp (param f32) (result f32)))
 
@@ -30,8 +29,8 @@
         (param $max_acceleration f32)
         (param $max_velocity f32)
         
-        ;; Output: returns a memory pointer to results array
-        ;; Results array layout (9 floats):
+        ;; Output: 
+        ;; Results array layout (9 floats = 36 bytes):
         ;; [0] new_vel_x
         ;; [1] new_vel_y
         ;; [2] new_fuel
@@ -43,7 +42,7 @@
         ;; [8] visual_pitch_delta
         (result i32)
         
-        ;; Local variables
+        ;; Local vars
         (local $altitude f32)
         (local $distance_from_center f32)
         (local $speed f32)
@@ -514,6 +513,6 @@
         (f32.min)
     )
     
-    ;; Memory to store results (9 floats = 36 bytes)
+    ;; Memory to store results 9 floats = 36 bytes
     (memory (export "memory") 1)
 )

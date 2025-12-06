@@ -59,6 +59,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		}
 	}, []);
 
+	// Debug Menu Options / States
 	const { DRAG_COEFFICIENT, EXHAUST_VELOCITY, BURN_RATE, THROTTLE, DRY_MASS, MOMENT_OF_INERTIA, GIMBAL_TORQUE } = useControls("Rocket Options", debug_rocket_options);
 	const { SURFACE_GRAVITY } = useControls("Earth Options", debug_physics_options);
 	const { MAX_DELTA, MAX_VELOCITY, MAX_ACCELERATION } = useControls("Clamp Options", debug_clamp_options);
@@ -94,8 +95,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			const quaternion = new THREE.Quaternion();
 			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), 0);
 			body.current.setRotation(quaternion, true);
+			// Reset physics frame tracking
+			firstPhysicsFrame.current = true;
+			physicsFrameCount.current = 0;
 		}
-	})
+	}, [launched, missionState])
 
 	const updateFrame = useCallback(({ camera, delta }: { camera: Camera; delta: number }) => {
 		// CAMERA
