@@ -513,6 +513,6 @@
         (f32.min)
     )
     
-    ;; Memory to store results (9 floats = 36 bytes)
+    ;; Memory to store results 9 floats = 36 bytes
     (memory (export "memory") 1)
 )
