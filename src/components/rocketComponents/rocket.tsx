@@ -95,8 +95,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			const quaternion = new THREE.Quaternion();
 			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), 0);
 			body.current.setRotation(quaternion, true);
+			// Reset physics frame tracking
+			firstPhysicsFrame.current = true;
+			physicsFrameCount.current = 0;
 		}
-	})
+	}, [launched, missionState])
 
 	const updateFrame = useCallback(({ camera, delta }: { camera: Camera; delta: number }) => {
 		// CAMERA

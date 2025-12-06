@@ -42,7 +42,7 @@ const LaunchInterface = () => {
                             Fuel Left
                         </span>
 
-                        <div className="fuel_container" style={{width: (state.fuel / 154)}}></div>
+                        <div className="fuel_container" style={{width: (state.fuel / 245)}}></div>
                     </div>
 
                     <div className="low_fuel_warning_container">
