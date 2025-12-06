@@ -92,18 +92,73 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
+    padding-top: 1rem;
 
     color: var(--text-color);
 }
 
 .end_message {
-    margin-top: 2rem;
+    font-size: 1.9rem;
+    margin-bottom: 0.8rem;
+    text-decoration: underline;
+    text-decoration-thickness: 0.4rem;
+    text-align: center;
+}
+
+.mission_outcome_container {
+    width: 60%;
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    align-items: center;
+}
+
+.outcome_stats_label_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.outcome_stats_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.mission_outcome_label {
+    font-size: 1.3rem;
+    text-align: left;
+}
+
+.mission_outcome_stat {
+    font-size: 1.3rem;
+    text-align: right;
+}
+
+.failed_text {
+    font-size: 1.4rem;
+    letter-spacing: 0.1rem;
+    color: rgb(255, 29, 29);
+    text-shadow: 0 0 20px rgb(248, 50, 50);
+    padding-left: 0.5rem;
+    padding-right: 0.3rem;
+    padding-top: 0.1rem;
+    background-color: rgba(0, 0, 0, 0.641);
+}
+
+.success_text {
+    font-size: 1.3rem;
+    color: rgba(26, 176, 26, 0.813);
+    text-shadow: 0 0 20px rgba(126, 255, 147, 0.63);
+    padding-left: 0.5rem;
+    padding-right: 0.4rem;
+    padding-top: 0.1rem;
+    background-color: rgba(0, 0, 0, 0.641);
 }
 
 .restart_button {
     width: 10rem;
     height: fit-content;
     padding-top: 0.2rem;
+    margin-top: 1rem;
     user-select: none;
 
     background-color: rgba(248, 50, 50, 0.759);

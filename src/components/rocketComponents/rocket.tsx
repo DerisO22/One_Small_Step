@@ -59,6 +59,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		}
 	}, []);
 
+	// Debug Menu Options / States
 	const { DRAG_COEFFICIENT, EXHAUST_VELOCITY, BURN_RATE, THROTTLE, DRY_MASS, MOMENT_OF_INERTIA, GIMBAL_TORQUE } = useControls("Rocket Options", debug_rocket_options);
 	const { SURFACE_GRAVITY } = useControls("Earth Options", debug_physics_options);
 	const { MAX_DELTA, MAX_VELOCITY, MAX_ACCELERATION } = useControls("Clamp Options", debug_clamp_options);
