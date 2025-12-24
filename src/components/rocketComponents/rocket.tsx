@@ -1,7 +1,7 @@
-import { Text, useCamera, useGLTF } from "@react-three/drei";
+import { Text, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { Mesh } from "three";
 import { Vector3, Camera } from "three";
 import * as THREE from "three";
