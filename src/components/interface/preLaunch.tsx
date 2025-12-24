@@ -67,7 +67,7 @@ const PreLaunchInterface = () => {
             {!state.launched ? (
                 <>
                     <div className="instructions_button_container">
-                        <div onClick={toggle_Instructions} className="instructions_button"></div>
+                        <button onClick={toggle_Instructions} className="instructions_button"></button>
                     </div>
 
                     {instructions_visible ? (
@@ -81,10 +81,10 @@ const PreLaunchInterface = () => {
                     ) : (<></>)}
 
                     <div className="launch_button_container">
-                        <div onClick={() => {
+                        <button onClick={() => {
                             launch();
                             startCountdown();
-                        }} className="launch_button">Launch</div>    
+                        }} className="launch_button">Launch</button>    
                     </div>
 
                     {/* Debug Menu */}

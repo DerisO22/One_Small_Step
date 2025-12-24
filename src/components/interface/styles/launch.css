@@ -1,3 +1,4 @@
+@import url("../../../index.css");
 /* 
     Rocket Measurements
     - Velocity
@@ -160,8 +161,11 @@
     padding-top: 0.2rem;
     margin-top: 1rem;
     user-select: none;
+    color: white;
+    font-family: bebas;
 
     background-color: rgba(248, 50, 50, 0.759);
+    border: none;
     transition: all 0.3s ease-in-out;
 }
 

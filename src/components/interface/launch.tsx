@@ -75,9 +75,9 @@ const LaunchInterface = () => {
 
                         {checkMissionOutcome() ? <span className="success_text">Success</span> :  <span className="failed_text">Failed</span>}
 
-                        <div onClick={reset} className="restart_button header1">
+                        <button onClick={reset} className="restart_button header1">
                             Restart
-                        </div>
+                        </button>
                     </div>
                 ) : (
                     <></>
