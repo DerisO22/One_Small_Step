@@ -25,7 +25,7 @@ export const CameraProvider = ({children}: CameraProviderProps) => {
     )
 }
 
-export const useCamera = () => {
+export const useCameraMode = () => {
     const context = useContext(CameraContext);
 
     if(!context){

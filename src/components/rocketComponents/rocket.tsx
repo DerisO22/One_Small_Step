@@ -1,4 +1,4 @@
-import { Text, useGLTF } from "@react-three/drei";
+import { Text, useCamera, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -9,6 +9,7 @@ import type { RocketProps } from "../../utils/types/missionTypes";
 import { useWasm } from "../../hooks/useWasm";
 import { useControls } from "leva";
 import RocketExhaustFlames from "./rocketExhaustFlames";
+import { useCameraMode } from "../../stores/CameraContext";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
@@ -31,15 +32,9 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const { wasm } = useWasm('/wasm/rocketPhysics.wasm');
 
 	// Camera Mode
-	const [cameraMode, setCameraMode] = useState<number>(0);
+	const { cameraMode, toggleCameraMode } = useCameraMode();
 
-	const ToggleCameraMode = () => {
-		if(cameraMode >= 2) {
-			setCameraMode(0);
-		}
-
-		setCameraMode(prev => prev + 1);
-	};
+	console.log(cameraMode);
 	
 	/**
 	 *  Leva Debug Menu Options
