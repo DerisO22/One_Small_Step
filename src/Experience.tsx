@@ -6,10 +6,12 @@ import { skyConfig } from './utils/consts/skyConfig.ts';
 import PreLaunchInterface from './components/interface/preLaunch.tsx';
 import LaunchInterface from './components/interface/launch.tsx';
 import { MissionProvider } from './stores/MissionContext.tsx';
+import { CameraProvider } from './stores/CameraContext.tsx';
 
 function App() {
 	return (
 		<>
+			<CameraProvider>
 			<MissionProvider>
 				<div style={{ width: '100vw', height: '100vh' }}>
 					<Canvas
@@ -56,9 +58,8 @@ function App() {
 				<PreLaunchInterface />
 				<LaunchInterface />
 			</MissionProvider>
-			
+			</CameraProvider>
 		</>
-		
 	)
 }
 
