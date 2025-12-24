@@ -13,9 +13,9 @@ export const CameraProvider = ({children}: CameraProviderProps) => {
     const toggleCameraMode = () => {
 		if(cameraMode >= 2) {
 			setCameraMode(0);
-		}
-
-		setCameraMode(prev => prev++);
+		} else {
+            setCameraMode(prev => prev + 1);
+        }
 	};
 
     return (

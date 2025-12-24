@@ -1,9 +1,12 @@
 import { useMission } from "../../stores/MissionContext";
 import './styles/launch.css';
 import '../../index.css';
+import { useCameraMode } from "../../stores/CameraContext";
 
 const LaunchInterface = () => {
     const { state, reset } = useMission();
+    const { cameraMode, toggleCameraMode } = useCameraMode();
+    console.log(cameraMode)
     
     const checkMissionOutcome: () => boolean = () => {
         if (state.altitude > 200 && state.velocity >= 7.8) {
@@ -32,6 +35,11 @@ const LaunchInterface = () => {
                             <span className="text_xs">{String(state.altitude).slice(0, 6)}</span>
                             <span className="velocity_tracker">KM</span>
                         </div>
+                    </div>
+
+                    {/* Camera Mode Toggle */}
+                    <div className="instructions_button_container">
+                        <button onClick={toggleCameraMode} className="instructions_button">Hello</button>
                     </div>
 
                     {/* Timer and Fuel */}

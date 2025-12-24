@@ -32,9 +32,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const { wasm } = useWasm('/wasm/rocketPhysics.wasm');
 
 	// Camera Mode
-	const { cameraMode, toggleCameraMode } = useCameraMode();
-
-	console.log(cameraMode);
+	const { cameraMode } = useCameraMode();
 	
 	/**
 	 *  Leva Debug Menu Options
@@ -101,6 +99,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			const quaternion = new THREE.Quaternion();
 			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), 0);
 			body.current.setRotation(quaternion, true);
+
 			// Reset physics frame tracking
 			firstPhysicsFrame.current = true;
 			physicsFrameCount.current = 0;
