@@ -6,7 +6,6 @@ import { useCameraMode } from "../../stores/CameraContext";
 const LaunchInterface = () => {
     const { state, reset } = useMission();
     const { cameraMode, toggleCameraMode } = useCameraMode();
-    console.log(cameraMode)
     
     const checkMissionOutcome: () => boolean = () => {
         if (state.altitude > 200 && state.velocity >= 7.8) {
@@ -39,7 +38,7 @@ const LaunchInterface = () => {
 
                     {/* Camera Mode Toggle */}
                     <div className="instructions_button_container">
-                        <button onClick={toggleCameraMode} className="instructions_button">Hello</button>
+                        <button onClick={toggleCameraMode} className="camera_toggle_button" style={{backgroundImage: 'none'}}>{cameraMode}</button>
                     </div>
 
                     {/* Timer and Fuel */}

@@ -110,8 +110,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		// CAMERA
 		if(!cameraPosition.current) return;
         cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
-        camera.position.lerp(cameraWorldPosition.current, 0.9);
 
+		if(cameraMode !== 2){
+			camera.position.lerp(cameraWorldPosition.current, 0.9);
+		}
+        
         if (cameraTarget.current) {
             cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
             cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.9);
