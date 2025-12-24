@@ -1,7 +1,7 @@
 import { Text, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Mesh } from "three";
 import { Vector3, Camera } from "three";
 import * as THREE from "three";
@@ -29,6 +29,17 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
     const { scene } = useGLTF('./models/rocketship_compressed-v1.glb', true, false);
 	const { wasm } = useWasm('/wasm/rocketPhysics.wasm');
+
+	// Camera Mode
+	const [cameraMode, setCameraMode] = useState<number>(0);
+
+	const ToggleCameraMode = () => {
+		if(cameraMode >= 2) {
+			setCameraMode(0);
+		}
+
+		setCameraMode(prev => prev + 1);
+	};
 	
 	/**
 	 *  Leva Debug Menu Options
@@ -229,9 +240,9 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 					scale={[.0008, .0008, .0008]}
 				/>
 				{ missionState.altitude ? <></> :
-				<Text color="white" fontSize={0.008} rotation={[0, Math.PI, 0]} position={[-0.03, 0.04, 0]}>
-					Saturn V
-				</Text>
+					<Text color="white" fontSize={0.008} rotation={[0, Math.PI, 0]} position={[-0.03, 0.04, 0]}>
+						Saturn V
+					</Text>
 				}
 				<group ref={cameraTarget} position-z={0.3} />
             	<group ref={cameraPosition} position-y={0.1} position-z={-0.15} />
