@@ -95,7 +95,7 @@
     font-weight: 900;
     font-family: bebas;
     text-align: center;
-    background-image: url('../../../../public/icons/telescope.png');
+    background-image: url('/icons/telescope.png');
     background-position: top;
     background-repeat: no-repeat;
     transition: all 0.3s ease-in-out;
