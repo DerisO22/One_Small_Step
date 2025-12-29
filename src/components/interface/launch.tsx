@@ -2,6 +2,7 @@ import { useMission } from "../../stores/MissionContext";
 import './styles/launch.css';
 import '../../index.css';
 import { useCameraMode } from "../../stores/CameraContext";
+import { CameraAngles } from "../../utils/consts/cameraAngles";
 
 const LaunchInterface = () => {
     const { state, reset } = useMission();
@@ -39,6 +40,7 @@ const LaunchInterface = () => {
                     {/* Camera Mode Toggle */}
                     <div className="instructions_button_container">
                         <button onClick={toggleCameraMode} className="camera_toggle_button">{cameraMode + 1}</button>
+                        <p className="camera_mode_text">{CameraAngles[cameraMode].modeName}</p>
                     </div>
 
                     {/* Timer and Fuel */}
