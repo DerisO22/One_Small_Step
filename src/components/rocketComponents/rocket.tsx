@@ -243,10 +243,10 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 					</Text>
 				}
 				{/* 0.3, 0.1, -0.15 reg cam position */}
-				<group ref={cameraTarget} position-z={cameraMode === 0 ? CameraAngles[cameraMode].cameraTargetZ : CameraAngles[cameraMode].cameraTargetZ}/>
+				<group ref={cameraTarget} position-z={CameraAngles[cameraMode].cameraTargetZ}/>
             	<group ref={cameraPosition} 
-					position-y={cameraMode === 0 ? CameraAngles[cameraMode].y : CameraAngles[cameraMode].y} 
-					position-z={cameraMode === 0 ? CameraAngles[cameraMode].z : CameraAngles[cameraMode].z} />
+					position-y={CameraAngles[cameraMode].y} 
+					position-z={CameraAngles[cameraMode].z} />
 
 				<RocketExhaustFlames />
 			</group>
