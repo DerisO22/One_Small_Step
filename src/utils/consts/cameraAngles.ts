@@ -11,5 +11,5 @@ export const CameraAngles = [
     { y: 0.1, z: -0.25, cameraTargetZ: 0},
 
     // Free Cam
-    { y: 0.1, z: -0.15, cameraTargetZ: 0}
+    { y: 0.1, z: -0.15, cameraTargetZ: 0.3}
 ]

@@ -48,7 +48,7 @@ function App() {
 							dampingFactor={0.05}
 							rotateSpeed={0.1}
 							panSpeed={0.1}
-							zoomSpeed={.001}
+							zoomSpeed={.1}
 							// minDistance={10}
 							// maxDistance={500}
 						/>
