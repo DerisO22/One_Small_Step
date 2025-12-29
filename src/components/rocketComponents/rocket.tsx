@@ -10,6 +10,7 @@ import { useWasm } from "../../hooks/useWasm";
 import { useControls } from "leva";
 import RocketExhaustFlames from "./rocketExhaustFlames";
 import { useCameraMode } from "../../stores/CameraContext";
+import { CameraAngles } from "../../utils/consts/cameraAngles";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
@@ -241,8 +242,11 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 						Saturn V
 					</Text>
 				}
-				<group ref={cameraTarget} position-z={0.3} />
-            	<group ref={cameraPosition} position-y={0.1} position-z={-0.15} />
+				{/* 0.3, 0.1, -0.15 reg cam position */}
+				<group ref={cameraTarget} position-z={cameraMode === 0 ? CameraAngles[cameraMode].cameraTargetZ : CameraAngles[cameraMode].cameraTargetZ}/>
+            	<group ref={cameraPosition} 
+					position-y={cameraMode === 0 ? CameraAngles[cameraMode].y : CameraAngles[cameraMode].y} 
+					position-z={cameraMode === 0 ? CameraAngles[cameraMode].z : CameraAngles[cameraMode].z} />
 
 				<RocketExhaustFlames />
 			</group>

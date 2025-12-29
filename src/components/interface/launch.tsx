@@ -38,7 +38,7 @@ const LaunchInterface = () => {
 
                     {/* Camera Mode Toggle */}
                     <div className="instructions_button_container">
-                        <button onClick={toggleCameraMode} className="camera_toggle_button">{cameraMode}</button>
+                        <button onClick={toggleCameraMode} className="camera_toggle_button">{cameraMode + 1}</button>
                     </div>
 
                     {/* Timer and Fuel */}
