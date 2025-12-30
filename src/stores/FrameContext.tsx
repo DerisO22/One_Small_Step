@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import type { FrameContextType } from "../utils/types/frameTypes";
 
 const FrameContext = createContext<FrameContextType | undefined>(undefined);
@@ -30,4 +30,14 @@ export const FrameProvider = ({ children }: FrameProviderProps) => {
             {children}
         </FrameContext.Provider>
     )
+}
+
+export const useFrameMode = () => {
+    const context = useContext(FrameContext);
+
+    if(!context){
+        throw new Error("useFrameMode must be used within a FrameProvider");
+    }
+
+    return context;
 }
