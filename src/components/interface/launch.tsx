@@ -3,10 +3,13 @@ import './styles/launch.css';
 import '../../index.css';
 import { useCameraMode } from "../../stores/CameraContext";
 import { CameraAngles } from "../../utils/consts/cameraAngles";
+import { useFrameMode } from "../../stores/FrameContext";
+import { frameModes } from "../../utils/consts/frameModes";
 
 const LaunchInterface = () => {
     const { state, reset } = useMission();
     const { cameraMode, toggleCameraMode } = useCameraMode();
+    const { frameMode, toggleFrameMode } = useFrameMode();
     
     const checkMissionOutcome: () => boolean = () => {
         if (state.altitude > 200 && state.velocity >= 7.8) {
@@ -41,6 +44,12 @@ const LaunchInterface = () => {
                     <div className="instructions_button_container">
                         <button onClick={toggleCameraMode} className="camera_toggle_button">{cameraMode + 1}</button>
                         <p className="camera_mode_text">{CameraAngles[cameraMode].modeName}</p>
+                    </div>
+
+                    {/* Camera Mode Toggle */}
+                    <div className="frame_button_container">
+                        <button onClick={toggleFrameMode} className="frame_toggle_button"></button>
+                        <p className="camera_mode_text">{frameModes[frameMode].speed}x</p>
                     </div>
 
                     {/* Timer and Fuel */}

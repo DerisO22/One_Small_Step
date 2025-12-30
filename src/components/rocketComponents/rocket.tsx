@@ -11,6 +11,8 @@ import { useControls } from "leva";
 import RocketExhaustFlames from "./rocketExhaustFlames";
 import { useCameraMode } from "../../stores/CameraContext";
 import { CameraAngles } from "../../utils/consts/cameraAngles";
+import { useFrameMode } from "../../stores/FrameContext";
+import { frameModes } from "../../utils/consts/frameModes";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
@@ -34,6 +36,9 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 
 	// Camera Mode
 	const { cameraMode } = useCameraMode();
+
+	// Slo-mo / Speed up Modes
+	const { frameMode } = useFrameMode();
 	
 	/**
 	 *  Leva Debug Menu Options
@@ -124,8 +129,9 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 
 		if(launched && body.current && missionState.fuel > 0 && wasm && wasm.physics_step && wasm.memory) {
 			// Clamp delta time to prevent absurd values
-			const safeDelta = Math.min(delta, MAX_DELTA);
+			const safeDelta = Math.min(delta * frameModes[frameMode].speed, MAX_DELTA);
 			missionState.missionTime += safeDelta;
+			const scaledMaxAccel = MAX_ACCELERATION * frameModes[frameMode].speed;
 			
 			// Skip first frame to avoid huge delta time spike
 			if (firstPhysicsFrame.current) {
@@ -177,7 +183,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				SURFACE_GRAVITY,
 				EARTH_RADIUS,
 				ROCKET_RADIUS,
-				MAX_ACCELERATION,
+				scaledMaxAccel,
 				MAX_VELOCITY
 			);
 			
@@ -215,7 +221,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				targetPitch: targetPitch,
 			});
 		}
-	}, [ launched, missionState, updateMission, wasm ]);
+	}, [ launched, missionState, updateMission, wasm, frameMode ]);
 
 	useFrame((state, delta) => {
 		updateFrame({ camera: state.camera, delta });
@@ -246,7 +252,8 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				<group ref={cameraTarget} position-z={CameraAngles[cameraMode].cameraTargetZ}/>
             	<group ref={cameraPosition} 
 					position-y={CameraAngles[cameraMode].y} 
-					position-z={CameraAngles[cameraMode].z} />
+					position-z={CameraAngles[cameraMode].z} 
+				/>
 
 				<RocketExhaustFlames />
 			</group>

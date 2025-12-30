@@ -7,10 +7,12 @@ import PreLaunchInterface from './components/interface/preLaunch.tsx';
 import LaunchInterface from './components/interface/launch.tsx';
 import { MissionProvider } from './stores/MissionContext.tsx';
 import { CameraProvider } from './stores/CameraContext.tsx';
+import { FrameProvider } from './stores/FrameContext.tsx';
 
 function App() {
 	return (
 		<>
+			<FrameProvider>
 			<CameraProvider>
 			<MissionProvider>
 				<div style={{ width: '100vw', height: '100vh' }}>
@@ -59,6 +61,7 @@ function App() {
 				<LaunchInterface />
 			</MissionProvider>
 			</CameraProvider>
+			</FrameProvider>
 		</>
 	)
 }
