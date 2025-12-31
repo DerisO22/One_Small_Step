@@ -9,7 +9,7 @@ import { frameModes } from "../../utils/consts/frameModes";
 const LaunchInterface = () => {
     const { state, reset } = useMission();
     const { cameraMode, toggleCameraMode } = useCameraMode();
-    const { frameMode, toggleFrameMode } = useFrameMode();
+    // const { frameMode, toggleFrameMode } = useFrameMode();
     
     const checkMissionOutcome: () => boolean = () => {
         if (state.altitude > 200 && state.velocity >= 7.8) {
@@ -46,11 +46,11 @@ const LaunchInterface = () => {
                         <p className="camera_mode_text">{CameraAngles[cameraMode].modeName}</p>
                     </div>
 
-                    {/* Camera Mode Toggle */}
-                    <div className="frame_button_container">
+                    {/* Frame Mode Toggle */}
+                    {/* <div className="frame_button_container">
                         <button onClick={toggleFrameMode} className="frame_toggle_button"></button>
                         <p className="camera_mode_text">{frameModes[frameMode].speed}x</p>
-                    </div>
+                    </div> */}
 
                     {/* Timer and Fuel */}
                     <div className="launch_timer_container">
