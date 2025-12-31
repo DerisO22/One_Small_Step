@@ -129,9 +129,8 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 
 		if(launched && body.current && missionState.fuel > 0 && wasm && wasm.physics_step && wasm.memory) {
 			// Clamp delta time to prevent absurd values
-			const safeDelta = Math.min(delta * frameModes[frameMode].speed, MAX_DELTA);
+			const safeDelta = Math.min(delta, MAX_DELTA);
 			missionState.missionTime += safeDelta;
-			const scaledMaxAccel = MAX_ACCELERATION * frameModes[frameMode].speed;
 			
 			// Skip first frame to avoid huge delta time spike
 			if (firstPhysicsFrame.current) {
@@ -183,7 +182,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				SURFACE_GRAVITY,
 				EARTH_RADIUS,
 				ROCKET_RADIUS,
-				scaledMaxAccel,
+				MAX_ACCELERATION,
 				MAX_VELOCITY
 			);
 			
