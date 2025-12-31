@@ -1,3 +1,5 @@
+@import url("../../../index.css");
+
 /* 
     Instructions 
 */
@@ -84,8 +86,9 @@
     text-transform: uppercase;
     letter-spacing: 0.1rem;
     color: rgb(255, 255, 255);
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 900;
+    font-family: bebas;
     border-radius: 5px;
     border: 1px solid rgb(255, 255, 255);
     background-color: rgba(242, 242, 242, 0.1);

@@ -6,10 +6,14 @@ import { skyConfig } from './utils/consts/skyConfig.ts';
 import PreLaunchInterface from './components/interface/preLaunch.tsx';
 import LaunchInterface from './components/interface/launch.tsx';
 import { MissionProvider } from './stores/MissionContext.tsx';
+import { CameraProvider } from './stores/CameraContext.tsx';
+import { FrameProvider } from './stores/FrameContext.tsx';
 
 function App() {
 	return (
 		<>
+			<FrameProvider>
+			<CameraProvider>
 			<MissionProvider>
 				<div style={{ width: '100vw', height: '100vh' }}>
 					<Canvas
@@ -46,7 +50,7 @@ function App() {
 							dampingFactor={0.05}
 							rotateSpeed={0.1}
 							panSpeed={0.1}
-							zoomSpeed={.001}
+							zoomSpeed={.1}
 							// minDistance={10}
 							// maxDistance={500}
 						/>
@@ -56,9 +60,9 @@ function App() {
 				<PreLaunchInterface />
 				<LaunchInterface />
 			</MissionProvider>
-			
+			</CameraProvider>
+			</FrameProvider>
 		</>
-		
 	)
 }
 

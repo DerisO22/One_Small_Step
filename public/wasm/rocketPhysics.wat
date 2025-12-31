@@ -282,8 +282,6 @@
         (local.get $net_force_vertical)
         (local.get $current_mass)
         (f32.div)
-        (local.get $ramp_multiplier)
-        (f32.mul)
         (local.get $max_acceleration)
         (f32.neg)
         (local.get $max_acceleration)
@@ -326,8 +324,6 @@
         (local.get $thrust_horizontal)
         (local.get $current_mass)
         (f32.div)
-        (local.get $ramp_multiplier)
-        (f32.mul)
         (local.set $horizontal_acceleration)
         
         ;; New horizontal velocity

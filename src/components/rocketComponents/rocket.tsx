@@ -9,6 +9,10 @@ import type { RocketProps } from "../../utils/types/missionTypes";
 import { useWasm } from "../../hooks/useWasm";
 import { useControls } from "leva";
 import RocketExhaustFlames from "./rocketExhaustFlames";
+import { useCameraMode } from "../../stores/CameraContext";
+import { CameraAngles } from "../../utils/consts/cameraAngles";
+import { useFrameMode } from "../../stores/FrameContext";
+// import { frameModes } from "../../utils/consts/frameModes";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
@@ -29,6 +33,12 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 	const body = useRef<RapierRigidBody>(null);
     const { scene } = useGLTF('./models/rocketship_compressed-v1.glb', true, false);
 	const { wasm } = useWasm('/wasm/rocketPhysics.wasm');
+
+	// Camera Mode
+	const { cameraMode } = useCameraMode();
+
+	// Slo-mo / Speed up Modes
+	const { frameMode } = useFrameMode();
 	
 	/**
 	 *  Leva Debug Menu Options
@@ -95,6 +105,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 			const quaternion = new THREE.Quaternion();
 			quaternion.setFromAxisAngle(new Vector3(0, 0, 1), 0);
 			body.current.setRotation(quaternion, true);
+
 			// Reset physics frame tracking
 			firstPhysicsFrame.current = true;
 			physicsFrameCount.current = 0;
@@ -105,9 +116,12 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 		// CAMERA
 		if(!cameraPosition.current) return;
         cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
-        camera.position.lerp(cameraWorldPosition.current, 0.9);
 
-        if (cameraTarget.current) {
+		if(cameraMode !== 2 && cameraMode !== 3){
+			camera.position.lerp(cameraWorldPosition.current, 0.9);
+		}
+        
+        if (cameraTarget.current && cameraMode !== 3) {
             cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
             cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.9);
             camera.lookAt(cameraLookAt.current);
@@ -206,7 +220,7 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 				targetPitch: targetPitch,
 			});
 		}
-	}, [ launched, missionState, updateMission, wasm ]);
+	}, [ launched, missionState, updateMission, wasm, frameMode ]);
 
 	useFrame((state, delta) => {
 		updateFrame({ camera: state.camera, delta });
@@ -229,12 +243,16 @@ const Rocket = ({ launched, missionState, updateMission }: RocketProps) => {
 					scale={[.0008, .0008, .0008]}
 				/>
 				{ missionState.altitude ? <></> :
-				<Text color="white" fontSize={0.008} rotation={[0, Math.PI, 0]} position={[-0.03, 0.04, 0]}>
-					Saturn V
-				</Text>
+					<Text color="white" fontSize={0.008} rotation={[0, Math.PI, 0]} position={[-0.03, 0.04, 0]}>
+						Saturn V
+					</Text>
 				}
-				<group ref={cameraTarget} position-z={0.3} />
-            	<group ref={cameraPosition} position-y={0.1} position-z={-0.15} />
+				{/* 0.3, 0.1, -0.15 reg cam position */}
+				<group ref={cameraTarget} position-z={CameraAngles[cameraMode].cameraTargetZ}/>
+            	<group ref={cameraPosition} 
+					position-y={CameraAngles[cameraMode].y} 
+					position-z={CameraAngles[cameraMode].z} 
+				/>
 
 				<RocketExhaustFlames />
 			</group>
