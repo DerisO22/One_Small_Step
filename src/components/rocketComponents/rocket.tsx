@@ -12,7 +12,7 @@ import RocketExhaustFlames from "./rocketExhaustFlames";
 import { useCameraMode } from "../../stores/CameraContext";
 import { CameraAngles } from "../../utils/consts/cameraAngles";
 import { useFrameMode } from "../../stores/FrameContext";
-import { frameModes } from "../../utils/consts/frameModes";
+// import { frameModes } from "../../utils/consts/frameModes";
 
 const initialCameraWorldPosition = new Vector3();
 const initialCameraLookAtWorldPosition = new Vector3();
